@@ -5,6 +5,8 @@ import video
 import sys
 import smtplib
 import time
+import io
+import picamera
 
 #  Goals of the algorithm
 #1 Detect the removal of a target object from the focus area
