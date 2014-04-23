@@ -24,8 +24,15 @@ def nothing(*arg):
 
 class App(object):
     def __init__(self, video_src,):
-        self.cam = video.create_capture(video_src)
-        ret, self.frame = self.cam.read()
+        #self.cam = video.create_capture(video_src)
+        stream = io.bytesIO()
+        with picamera.PiCamera() as camera:
+            camera.resolution = (640,480)
+            camera.capture(stream,format='jpeg')
+        data = np.fromstring(stream.getvalue(),dtype=np.uint8)
+        self.frame=cv2.imdecode(data,1)
+
+        #ret, self.frame = self.cam.read()
         #self.cam = cv2.VideoCapture('video_1.mkv')
         #cv2.namedWindow('Camera View')
         #cv2.setMouseCallback('Camera View', self.onmouse)
@@ -147,8 +154,14 @@ class App(object):
         while True:
             #Read in the image, Draw Edges
             #self.frame = cv2.imread('edgetest.png')
-            ret, self.frame = self.cam.read()
+            #ret, self.frame = self.cam.read()
             #App.add_memory(self)
+            stream = io.bytesIO()
+            with picamera.PiCamera() as camera:
+                camera.resolution = (640,480)
+                camera.capture(stream,format='jpeg')
+            data = np.fromstring(stream.getvalue(),dtype=np.uint8)
+            self.frame=cv2.imdecode(data,1)
             if self.selection and self.tracking_state:
                 for s in self.selection:
                     ind = self.selection.index(s)
@@ -181,6 +194,14 @@ class App(object):
         cv2.destroyAllWindows()
 
 if __name__ == '__main__':
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(("localhost", 9988))
+    s.listen(1)
+    conn, addr = s.accept()
+    data = conn.recv(1024)
+    conn.close()
+    print data
     import sys
     try: video_src = sys.argv[1]
     except: video_src = 0
