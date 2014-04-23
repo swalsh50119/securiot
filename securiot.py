@@ -27,12 +27,12 @@ def nothing(*arg):
 class App(object):
     def __init__(self, video_src,):
         #self.cam = video.create_capture(video_src)
-        stream = io.bytesIO()
-        with picamera.PiCamera() as camera:
-            camera.resolution = (640,480)
-            camera.capture(stream,format='jpeg')
-        data = np.fromstring(stream.getvalue(),dtype=np.uint8)
-        self.frame=cv2.imdecode(data,1)
+        #stream = io.BytesIO()
+        #with picamera.PiCamera() as camera:
+        #    camera.resolution = (640,480)
+        #    camera.capture(stream,format='jpeg')
+        #data = np.fromstring(stream.getvalue(),dtype=np.uint8)
+        #self.frame=cv2.imdecode(data,1)
 
         #ret, self.frame = self.cam.read()
         #self.cam = cv2.VideoCapture('video_1.mkv')
@@ -158,7 +158,7 @@ class App(object):
             #self.frame = cv2.imread('edgetest.png')
             #ret, self.frame = self.cam.read()
             #App.add_memory(self)
-            stream = io.bytesIO()
+            stream = io.BytesIO()
             with picamera.PiCamera() as camera:
                 camera.resolution = (640,480)
                 camera.capture(stream,format='jpeg')
