@@ -161,6 +161,7 @@ class App(object):
             stream = io.BytesIO()
             with picamera.PiCamera() as camera:
                 camera.resolution = (640,480)
+                time.sleep(.5)
                 camera.capture(stream,format='jpeg')
             data = np.fromstring(stream.getvalue(),dtype=np.uint8)
             self.frame=cv2.imdecode(data,1)
