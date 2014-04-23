@@ -194,14 +194,14 @@ class App(object):
         cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    import socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("localhost", 9988))
-    s.listen(1)
-    conn, addr = s.accept()
-    data = conn.recv(1024)
-    conn.close()
-    print data
+    #import socket
+    #s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #s.bind(("localhost", 9988))
+    #s.listen(1)
+    #conn, addr = s.accept()
+    #data = conn.recv(1024)
+    #conn.close()
+    #print data
     import sys
     try: video_src = sys.argv[1]
     except: video_src = 0
