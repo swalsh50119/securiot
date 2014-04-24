@@ -42,7 +42,7 @@ class App(object):
         #cv2.createTrackbar('thrs2', 'edge', 200, 3000, nothing)
 
         #Paramters to tune
-        self.calib_len = 30
+        self.calib_len = 10
         self.var_scale = 2
         self.memory_max_len = 20
 
@@ -113,10 +113,11 @@ class App(object):
     def on_steal(self,i):
         print "ALERT"
         #App.send_sms(self)
-        #self.steal_mem.append(np.copy(self.memory))
+        self.steal_mem.append(np.copy(self.memory))
         #for img in self.steal_mem[i]
-        #    imshow('Recording of Theft',img)
-        #    ch = 0xFF & cv2.waitKey(30)
+        print 'just copied' 
+        imshow('Recording of Theft',self.steal_mem[0])
+        ch = 0xFF & cv2.waitKey(0)
 
 
     def check_obj(self,area_arr,i):
@@ -164,10 +165,6 @@ class App(object):
             data = np.fromstring(stream.getvalue(),dtype=np.uint8)
             self.frame=cv2.imdecode(data,1)
             App.add_memory(self)
-            print 'done'
-            cv2.imwrite('output.jpeg',self.frame)
-            cv2.destroyAllWindows()
-            break
             if self.selection and self.tracking_state:
                 for s in self.selection:
                     ind = self.selection.index(s)
