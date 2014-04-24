@@ -165,7 +165,7 @@ class App(object):
             self.frame=cv2.imdecode(data,1)
             App.add_memory(self)
             print 'done'
-            imwrite('output.jpeg',self.frame)
+            cv2.imwrite('output.jpeg',self.frame)
             cv2.destroyAllWindows()
             break
             if self.selection and self.tracking_state:
