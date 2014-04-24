@@ -6,7 +6,7 @@ import sys
 import smtplib
 import time
 import io
-import picamera
+#import picamera
 
 #  Goals of the algorithm
 #1 Detect the removal of a target object from the focus area
@@ -209,7 +209,7 @@ if __name__ == '__main__':
     img1 = cv2.imread('edgetest.png')
     height , width , layers =  img1.shape
     video = cv2.VideoWriter('video.avi',-1,1,(width,height))
-
+    print video.isOpened()
     video.write(img1)
     cv2.destroyAllWindows()
     video.release()
