@@ -1,7 +1,6 @@
 import io
 import random
 import picamera
-from PIL import Image
 
 prior_image = None
 
@@ -10,14 +9,16 @@ def detect_motion(camera):
     stream = io.BytesIO()
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
+    data = np.fromstring(stream.getvalue(),dtype=np.uint8)
+    self.frame=cv2.imdecode(data,1)
     if prior_image is None:
-        prior_image = Image.open(stream)
+        prior_image = self.frame
         return False
     else:
         current_image = Image.open(stream)
         # Compare current_image to prior_image to detect motion. This is
         # left as an exercise for the reader!
-        result = random.randint(0, 10) == 0
+        result = random.randint(0, 100) == 0
         # Once motion detection is done, make the prior image the current
         prior_image = current_image
         return result
