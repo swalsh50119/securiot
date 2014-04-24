@@ -66,7 +66,7 @@ class App(object):
         self.memory.append(np.copy(self.frame))
         #if len(self.memory) > self.memory_max_len:
             #self.memory.pop(0)
-        name = '../imgs/' + str(self.file_ctr) + '.jpg'
+        name = 'imgs/' + str(self.file_ctr) + '.jpg'
         cv2.imwrite(name,self.frame)
         self.file_ctr += 1
 
