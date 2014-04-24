@@ -71,8 +71,8 @@ class App(object):
         files = glob.glob('./memory/*')
         files_sort = sorted(files, key=os.path.getmtime)
         if len(files) > self.memory_max_len:
+            print files_sort[0]
             os.remove(files_sort[0])
-            print files[0]
         self.memory.append(np.copy(self.frame))
         name = 'memory/' + str(int(time.time())) + '.jpg'
         cv2.imwrite(name,self.frame)
