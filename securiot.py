@@ -69,9 +69,13 @@ class App(object):
 
     def add_memory(self):
         files = glob.glob('./memory/*')
-        sorted(files, key=os.path.getmtime)
+        a = sorted(files, key=os.path.getmtime)
+        print files
+        print a
+
         if len(files) > self.memory_max_len:
             os.remove(files[0])
+            print '--'
             print files[0]
         self.memory.append(np.copy(self.frame))
         name = 'memory/' + str(int(time.time())) + '.jpg'
@@ -172,7 +176,7 @@ class App(object):
             stream = io.BytesIO()
             with picamera.PiCamera() as camera:
                 camera.resolution = (640,480)
-                time.sleep(.5)
+                time.sleep(.3)
                 camera.capture(stream,format='jpeg')
             data = np.fromstring(stream.getvalue(),dtype=np.uint8)
             self.frame=cv2.imdecode(data,1)
