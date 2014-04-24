@@ -209,16 +209,8 @@ if __name__ == '__main__':
     #data = conn.recv(1024)
     #conn.close()
     #print data
-    
-    img1 = cv2.imread('edgetest.png')
-    height , width , layers =  img1.shape
-    video = cv2.VideoWriter('video.avi',-1,1,(width,height))
-    print video.isOpened()
-    video.write(img1)
-    cv2.destroyAllWindows()
-    video.release()
     import sys
     try: video_src = sys.argv[1]
     except: video_src = 0
     print __doc__
-    #App(video_src).run()
+    App(video_src).run()
