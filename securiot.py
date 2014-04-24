@@ -69,13 +69,9 @@ class App(object):
 
     def add_memory(self):
         files = glob.glob('./memory/*')
-        a = sorted(files, key=os.path.getmtime)
-        print files
-        print a
-
+        files_sort = sorted(files, key=os.path.getmtime)
         if len(files) > self.memory_max_len:
-            os.remove(files[0])
-            print '--'
+            os.remove(files_sort[0])
             print files[0]
         self.memory.append(np.copy(self.frame))
         name = 'memory/' + str(int(time.time())) + '.jpg'
