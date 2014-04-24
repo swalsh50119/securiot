@@ -69,6 +69,7 @@ class App(object):
 
     def add_memory(self):
         files = glob.glob('./memory/*')
+        sorted(files)
         if len(files) > self.memory_max_len:
             os.remove(files[0])
             print files[0]
