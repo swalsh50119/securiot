@@ -2,6 +2,7 @@ import io
 import random
 import picamera
 import numpy as np
+import cv2
 
 prior_image = None
 
@@ -16,7 +17,7 @@ def detect_motion(camera):
         prior_image = self.frame
         return False
     else:
-        current_image = Image.open(stream)
+        current_image = self.frame
         # Compare current_image to prior_image to detect motion. This is
         # left as an exercise for the reader!
         result = random.randint(0, 10) == 0
