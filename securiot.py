@@ -63,6 +63,10 @@ class App(object):
 
     def add_memory(self):
         self.memory.append(np.copy(self.frame))
+        print 'copied np'
+        import copy
+        self.memory.append(copy.copy(self.frame))
+        print 'copied copy'
         if len(self.memory) > self.memory_max_len:
             self.memory.pop(0)
 
@@ -116,7 +120,7 @@ class App(object):
         self.steal_mem.append(np.copy(self.memory))
         #for img in self.steal_mem[i]
         print 'just copied' 
-        imshow('Recording of Theft',self.steal_mem[0])
+        cv2.imshow('Recording of Theft',self.steal_mem[0])
         ch = 0xFF & cv2.waitKey(0)
 
 
