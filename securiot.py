@@ -67,7 +67,7 @@ class App(object):
         #if len(self.memory) > self.memory_max_len:
             #self.memory.pop(0)
         name = '../imgs/' + str(self.file_ctr) + '.jpg'
-        cv2.write(name,self.frame)
+        cv2.imwrite(name,self.frame)
         self.file_ctr += 1
 
     def add_focus(self):
