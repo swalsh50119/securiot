@@ -9,7 +9,6 @@ import io
 import picamera
 import glob
 import os
-from PIL import Image
 
 #  Goals of the algorithm
 #1 Detect the removal of a target object from the focus area
