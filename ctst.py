@@ -1,6 +1,7 @@
 import io
 import random
 import picamera
+import numpy as np
 
 prior_image = None
 
