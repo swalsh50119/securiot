@@ -12,12 +12,12 @@ def detect_motion(camera):
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
     data = np.fromstring(stream.getvalue(),dtype=np.uint8)
-    self.frame=cv2.imdecode(data,1)
+    frame=cv2.imdecode(data,1)
     if prior_image is None:
-        prior_image = self.frame
+        prior_image = frame
         return False
     else:
-        current_image = self.frame
+        current_image = frame
         # Compare current_image to prior_image to detect motion. This is
         # left as an exercise for the reader!
         result = random.randint(0, 10) == 0
