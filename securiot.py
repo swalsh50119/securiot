@@ -7,6 +7,8 @@ import smtplib
 import time
 import io
 import picamera
+import glob
+import os
 
 #  Goals of the algorithm
 #1 Detect the removal of a target object from the focus area
@@ -60,15 +62,17 @@ class App(object):
         self.tracking_state = 1
         self.memory = []
         self.steal_mem=[]
-        self.file_ctr = 0
+
+        files = glob.glob('./memory/*')
+        for f in files:
+            os.remove(f)
 
     def add_memory(self):
         self.memory.append(np.copy(self.frame))
         #if len(self.memory) > self.memory_max_len:
             #self.memory.pop(0)
-        name = 'imgs/' + str(time.time()) + '.jpg'
+        name = 'memory/' + str(int(time.time())) + '.jpg'
         cv2.imwrite(name,self.frame)
-        self.file_ctr += 1
 
     def add_focus(self):
         self.temp_area.append([])
