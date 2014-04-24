@@ -46,7 +46,7 @@ class App(object):
         #Paramters to tune
         self.calib_len = 10
         self.var_scale = 2
-        self.memory_max_len = 20
+        self.memory_max_len = 5
 
         self.temp_area = [[]]
         self.calib = [0]
