@@ -42,6 +42,7 @@ def write_video(stream):
     stream.seek(0)
     stream.truncate()
 
+
 with picamera.PiCamera() as camera:
     print "1"
     camera.resolution = (1280, 720)
