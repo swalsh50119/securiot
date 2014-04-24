@@ -30,7 +30,7 @@ def write_video(stream):
     # Write the entire content of the circular buffer to disk. No need to
     # lock the stream here as we're definitely not writing to it
     # simultaneously
-    with io.open('before.h264', 'wb') as output:
+    with io.open('before.avi', 'wb') as output:
         for frame in stream.frames:
             if frame.header:
                 stream.seek(frame.position)
@@ -48,9 +48,9 @@ print "start"
 with picamera.PiCamera() as camera:
     print "1"
     camera.resolution = (1280, 720)
-    stream = picamera.PiCameraCircularIO(camera, seconds=5)
+    stream = picamera.PiCameraCircularIO(camera, seconds=2)
     print "2"
-    camera.start_recording(stream, format='h264')
+    camera.start_recording(stream, format='avi')
     print "line 49"
     try:
         while True:
@@ -59,7 +59,7 @@ with picamera.PiCamera() as camera:
                 print('Motion detected!')
                 # As soon as we detect motion, split the recording to
                 # record the frames "after" motion
-                camera.split_recording('after.h264')
+                camera.split_recording('after.avi')
                 # Write the 10 seconds "before" motion to disk as well
                 write_video(stream)
                 # Wait until motion is no longer detected, then split
