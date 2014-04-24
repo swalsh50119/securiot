@@ -43,8 +43,10 @@ def write_video(stream):
     stream.truncate()
 
 with picamera.PiCamera() as camera:
+    print "1"
     camera.resolution = (1280, 720)
     stream = picamera.PiCameraCircularIO(camera, seconds=5)
+    print "2"
     camera.start_recording(stream, format='h264')
     print "line 49"
     try:
