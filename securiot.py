@@ -44,7 +44,7 @@ class App(object):
         #Paramters to tune
         self.calib_len = 30
         self.var_scale = 2
-        self.memory_max_len = 30
+        self.memory_max_len = 20
 
         self.temp_area = [[]]
         self.calib = [0]
@@ -113,11 +113,10 @@ class App(object):
     def on_steal(self,i):
         print "ALERT"
         #App.send_sms(self)
-
         #self.steal_mem.append(np.copy(self.memory))
         #for img in self.steal_mem[i]
-            #imshow('Recording of Theft',img)
-            #ch = 0xFF & cv2.waitKey(30)
+        #    imshow('Recording of Theft',img)
+        #    ch = 0xFF & cv2.waitKey(30)
 
 
     def check_obj(self,area_arr,i):
@@ -157,7 +156,6 @@ class App(object):
             #Read in the image, Draw Edges
             #self.frame = cv2.imread('edgetest.png')
             #ret, self.frame = self.cam.read()
-            #App.add_memory(self)
             stream = io.BytesIO()
             with picamera.PiCamera() as camera:
                 camera.resolution = (640,480)
@@ -165,6 +163,11 @@ class App(object):
                 camera.capture(stream,format='jpeg')
             data = np.fromstring(stream.getvalue(),dtype=np.uint8)
             self.frame=cv2.imdecode(data,1)
+            App.add_memory(self)
+            print 'done'
+            imwrite('output.jpeg',self.frame)
+            cv2.destroyAllWindows()
+            break
             if self.selection and self.tracking_state:
                 for s in self.selection:
                     ind = self.selection.index(s)
