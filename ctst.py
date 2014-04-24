@@ -18,7 +18,8 @@ def detect_motion(camera):
         current_image = Image.open(stream)
         # Compare current_image to prior_image to detect motion. This is
         # left as an exercise for the reader!
-        result = random.randint(0, 100) == 0
+        result = random.randint(0, 10) == 0
+        print "here"
         # Once motion detection is done, make the prior image the current
         prior_image = current_image
         return result
@@ -43,8 +44,9 @@ def write_video(stream):
 
 with picamera.PiCamera() as camera:
     camera.resolution = (1280, 720)
-    stream = picamera.PiCameraCircularIO(camera, seconds=10)
+    stream = picamera.PiCameraCircularIO(camera, seconds=5)
     camera.start_recording(stream, format='h264')
+    print "line 49"
     try:
         while True:
             camera.wait_recording(1)
