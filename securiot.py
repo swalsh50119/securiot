@@ -68,11 +68,14 @@ class App(object):
             os.remove(f)
 
     def add_memory(self):
+        files = glob.glob('./memory/*')
+        if len(files) > self.memory_max_len:
+            os.remove(files[0])
+            print files[0]
         self.memory.append(np.copy(self.frame))
-        #if len(self.memory) > self.memory_max_len:
-            #self.memory.pop(0)
         name = 'memory/' + str(int(time.time())) + '.jpg'
         cv2.imwrite(name,self.frame)
+
 
     def add_focus(self):
         self.temp_area.append([])
@@ -198,7 +201,7 @@ class App(object):
                     #Do initial calibration then checking of the target
                     App.check_obj(self,area_arr,ind)
                     winname = 'Focus' + str(ind)
-                    cv2.imshow(winname,preview)
+                    #cv2.imshow(winname,preview)
             ch = 0xFF & cv2.waitKey(30)
             if ch == 27:
                 break
