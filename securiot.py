@@ -178,7 +178,7 @@ class App(object):
             stream = picamera.PiCameraCircularIO(camera, seconds=10)
             camera.start_recording(stream, format='h264')
             while True:
-                camera.wait_recording(0.5)
+                camera.wait_recording(0.3)
                 self.frame = App.take_pic(self,camera)
                 #if not self.selection and not self.tracking_state:
                     #App.send_first()
