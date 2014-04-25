@@ -178,43 +178,42 @@ class App(object):
             stream = picamera.PiCameraCircularIO(camera, seconds=10)
             camera.start_recording(stream, format='h264')
             camera.wait_recording(10)
-
-        '''
-        while True:
-            camera.wait_recording(1)
-            self.frame = App.take_pic(self,camera)
-            #if not self.selection and not self.tracking_state:
-                #App.send_first()
-            if self.selection and self.tracking_state:
-                for s in self.selection:
-                    ind = self.selection.index(s)
-                    x0, y0, x1, y1 = s
-                    focus = self.frame[y0:y1,x0:x1]
-                    img = cv2.cvtColor(focus, cv2.COLOR_BGR2GRAY)
-                    thrs1 = 2000 #cv2.getTrackbarPos('thrs1', 'Camera View')
-                    thrs2 = 200 #cv2.getTrackbarPos('thrs2', 'edge')
-                    edges = cv2.Canny(img, thrs1, thrs2, apertureSize=5)
-                    kernel = np.ones((3,3),np.uint8)
-                    edges = cv2.dilate(edges,kernel,iterations = 2)
-                    preview = self.frame #np.copy(self.frame)
-                    contours, hier = cv2.findContours(edges,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE,offset=(x0,y0))
-                    area_arr = []
-                    for cnt in contours:
-                        #area_arr.append(cv2.contourArea(cnt))
-                        hull = cv2.convexHull(cnt)
-                        area_arr.append(cv2.contourArea(hull))
-                        #cv2.drawContours(preview, cnt, -1,(255,0,255),4,offset=(x0,y0))
-                        cv2.fillConvexPoly(preview,hull,(255,255,100))
-                    area_arr.sort()
-                    #print area_arr
-                    #Do initial calibration then checking of the target
-                    App.check_obj(self,area_arr,ind)
-                    winname = 'Focus' + str(ind)
-                    #cv2.imshow(winname,preview)
-            ch = 0xFF & cv2.waitKey(1)
-            if ch == 27:
-                break
-        '''
+            '''
+            while True:
+                camera.wait_recording(1)
+                self.frame = App.take_pic(self,camera)
+                #if not self.selection and not self.tracking_state:
+                    #App.send_first()
+                if self.selection and self.tracking_state:
+                    for s in self.selection:
+                        ind = self.selection.index(s)
+                        x0, y0, x1, y1 = s
+                        focus = self.frame[y0:y1,x0:x1]
+                        img = cv2.cvtColor(focus, cv2.COLOR_BGR2GRAY)
+                        thrs1 = 2000 #cv2.getTrackbarPos('thrs1', 'Camera View')
+                        thrs2 = 200 #cv2.getTrackbarPos('thrs2', 'edge')
+                        edges = cv2.Canny(img, thrs1, thrs2, apertureSize=5)
+                        kernel = np.ones((3,3),np.uint8)
+                        edges = cv2.dilate(edges,kernel,iterations = 2)
+                        preview = self.frame #np.copy(self.frame)
+                        contours, hier = cv2.findContours(edges,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE,offset=(x0,y0))
+                        area_arr = []
+                        for cnt in contours:
+                            #area_arr.append(cv2.contourArea(cnt))
+                            hull = cv2.convexHull(cnt)
+                            area_arr.append(cv2.contourArea(hull))
+                            #cv2.drawContours(preview, cnt, -1,(255,0,255),4,offset=(x0,y0))
+                            cv2.fillConvexPoly(preview,hull,(255,255,100))
+                        area_arr.sort()
+                        #print area_arr
+                        #Do initial calibration then checking of the target
+                        App.check_obj(self,area_arr,ind)
+                        winname = 'Focus' + str(ind)
+                        #cv2.imshow(winname,preview)
+                ch = 0xFF & cv2.waitKey(1)
+                if ch == 27:
+                    break
+            '''
             cv2.destroyAllWindows()
             camera.stop_recording()
 
