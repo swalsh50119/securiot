@@ -173,8 +173,8 @@ class App(object):
             while True:
                 camera.wait_recording(0.3)
                 self.frame = App.take_pic(self,camera)
-                if not self.selection and not self.init_img_sent:
-                    App.send_first(self.frame)
+                if not self.init_img_sent:
+                    App.send_first(self,self.frame)
                     #App.check_server()
                 if self.selection and self.tracking_state:
                     for s in self.selection:
