@@ -2,6 +2,7 @@ import io
 import random
 import picamera
 import cv2
+import numpy as np
 
 
 def write_now():
