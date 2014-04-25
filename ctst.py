@@ -60,5 +60,7 @@ with picamera.PiCamera() as camera:
                     camera.wait_recording(1)
                 print('Motion stopped!')
                 camera.split_recording(stream)
+                break
+            break
     finally:
         camera.stop_recording()
