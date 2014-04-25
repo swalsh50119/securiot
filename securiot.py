@@ -60,7 +60,8 @@ class App(object):
         self.selection = []#(150,200,300,400)]
         self.curr_selection = None
         self.drag_start = None
-        self.tracking_state = 1
+        self.init_img_sent = False
+        self.tracking_state = 0
         self.memory = []
         self.steal_mem=[]
 
@@ -96,6 +97,7 @@ class App(object):
 
     def send_first(self,img):
         cv2.imwrite('init_pic.jpg',img)
+        self.init_img_sent = True
 
     def add_focus(self):
         self.temp_area.append([])
@@ -170,7 +172,7 @@ class App(object):
             while True:
                 camera.wait_recording(0.3)
                 self.frame = App.take_pic(self,camera)
-                if not self.selection and not self.tracking_state:
+                if not self.selection and not self.init_img_sent:
                     App.send_first(self.frame)
                     #App.check_server()
                 if self.selection and self.tracking_state:
