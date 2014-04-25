@@ -2,8 +2,8 @@ import io
 import random
 import picamera
 from PIL import Image
-
-prior_image = None
+import cv2
+import numpy as np
 
 def detect_motion(camera):
     global prior_image
@@ -11,6 +11,8 @@ def detect_motion(camera):
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
     current_image = Image.open(stream)
+    print type(current_image)
+
     # Compare current_image to prior_image to detect motion. This is
     # left as an exercise for the reader!
     result = True
