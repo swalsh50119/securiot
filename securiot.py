@@ -205,8 +205,8 @@ class App(object):
                             # recording back to the in-memory circular buffer
                             camera.wait_recording(10)
                             camera.split_recording(stream)
-                        winname = 'Focus' + str(ind)
-                        cv2.imshow(winname,preview)
+                        #winname = 'Focus' + str(ind)
+                        #cv2.imshow(winname,preview)
                 ch = 0xFF & cv2.waitKey(1)
                 if ch == 27:
                     break
