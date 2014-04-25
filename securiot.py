@@ -98,6 +98,7 @@ class App(object):
     def send_first(self,img):
         cv2.imwrite('init_pic.jpg',img)
         self.init_img_sent = True
+        print 'ref img sent'
 
     def add_focus(self):
         self.temp_area.append([])
