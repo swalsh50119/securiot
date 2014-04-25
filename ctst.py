@@ -32,7 +32,7 @@ def write_video(stream):
         while True:
             buf = stream.read1()
             if not buf:
-                break
+                break   
             output.write(buf)
     # Wipe the circular stream once we're done
     stream.seek(0)
