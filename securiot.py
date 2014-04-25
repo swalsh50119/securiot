@@ -180,7 +180,7 @@ class App(object):
         while True:
             camera.wait_recording(1)
             self.frame = App.take_pic(self,camera)
-            if not self.selection and not self.tracking_state:
+            #if not self.selection and not self.tracking_state:
                 #App.send_first()
             if self.selection and self.tracking_state:
                 for s in self.selection:
