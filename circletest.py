@@ -4,7 +4,7 @@ import picamera
 
 def write_now():
     # Randomly return True (like a fake motion detection routine)
-    return random.randint(0, 10) == 0
+    return 0==0
 
 def write_video(stream):
     print('Writing video!')
@@ -19,15 +19,19 @@ def write_video(stream):
             output.write(stream.read())
 
 with picamera.PiCamera() as camera:
-    stream = picamera.PiCameraCircularIO(camera, seconds=5)
+    camera.resolution = (640,480)
+    stream = picamera.PiCameraCircularIO(camera, seconds=10)
     camera.start_recording(stream, format='h264')
     try:
         while True:
             camera.wait_recording(1)
             if write_now():
-                # Keep recording for 10 seconds and only then write the
+                # Keep recording for 5 seconds and only then write the
                 # stream to disk
-                camera.wait_recording(10)
+                camera.wait_recording(5)
                 write_video(stream)
+                print "Done writing"
+                break
+            break
     finally:
         camera.stop_recording()
