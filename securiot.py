@@ -14,16 +14,15 @@ import os
 #   -Goal: Detect theft of objects from a desk and alert user
 
 # Server(Android/User) to App communication
-# Camera On/Off - turns on the camera
-#   Set Phone number
-# Focus Region - (x0,y0,x1,y1) region for focus
-# Retrieve current snapshot
+# Camera On/Off - turns on the camera cameraon / cameraoff
+# Focus Region - (x0,y0,x1,y1) region for focus downloadfocus(100,200,200,300) 
+# Retrieve current snapshot uploadsnapshot
 
 # App to Server(User)
-# Camera On/Off Response
-# Tracking State
-# Theft Videos
-# Upload Current snapshot
+# Camera On/Off Response - cameraon / cameraoff
+# Tracking State - trackingtrue / trackingfalse
+# Theft Videos - downloadvideos
+# Upload Current snapshot downloadsnapshot
 
 def nothing(*arg):
     pass
@@ -75,7 +74,13 @@ class App(object):
                 output.write(buf)
         stream.seek(0)
         stream.truncate()
-
+    
+    #Read server 
+    def read_server():
+        
+    #Update the information on the server
+    def write_server():
+        
     #Send the initial image for focus region ID
     def send_first(self,img):
         cv2.imwrite('init_pic.jpg',img)
