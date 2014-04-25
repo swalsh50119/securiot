@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "$#" -eq "0" ]
+  then
+    echo "no arguments supplied"
+    exit 1
+fi
+
+FILE=$1
+
+scp -i 144r_2.pem $1 ubuntu@ec2-54-187-50-133.us-west-2.compute.amazonaws.com:~/
