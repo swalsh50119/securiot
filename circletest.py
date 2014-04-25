@@ -5,7 +5,9 @@ import cv2
 
 
 def write_now():
-    img = stream.seek(0)
+    data = np.fromstring(stream.getvalue(),dtype=np.uint8)
+    img = cv2.imdecode(data,1)
+    #img = stream.seek(0)
     cv2.imshow('Work plz',img)
     cv2.waitkey(0)
     cv2.destroyAllWindows()
