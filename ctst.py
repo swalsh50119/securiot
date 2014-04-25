@@ -3,22 +3,30 @@ import random
 import picamera
 from PIL import Image
 
+prior_image = None
+
 def detect_motion(camera):
     global prior_image
     stream = io.BytesIO()
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
-    current_image = Image.open(stream)
-    # Compare current_image to prior_image to detect motion. This is
-    # left as an exercise for the reader!
-    result = random.randint(0, 10) == 0
-    return result
+    if prior_image is None:
+        prior_image = Image.open(stream)
+        return False
+    else:
+        current_image = Image.open(stream)
+        # Compare current_image to prior_image to detect motion. This is
+        # left as an exercise for the reader!
+        result = random.randint(0, 10) == 0
+        # Once motion detection is done, make the prior image the current
+        prior_image = current_image
+        return result
 
 def write_video(stream):
     # Write the entire content of the circular buffer to disk. No need to
     # lock the stream here as we're definitely not writing to it
     # simultaneously
-    with io.open('before.mjpeg', 'wb') as output:
+    with io.open('before.h264', 'wb') as output:
         for frame in stream.frames:
             if frame.header:
                 stream.seek(frame.position)
@@ -33,9 +41,9 @@ def write_video(stream):
     stream.truncate()
 
 with picamera.PiCamera() as camera:
-    camera.resolution = (1280, 720)
+    camera.resolution = (640, 480)
     stream = picamera.PiCameraCircularIO(camera, seconds=10)
-    camera.start_recording(stream, format='mjpeg')
+    camera.start_recording(stream, format='h264')
     try:
         while True:
             camera.wait_recording(1)
@@ -43,7 +51,7 @@ with picamera.PiCamera() as camera:
                 print('Motion detected!')
                 # As soon as we detect motion, split the recording to
                 # record the frames "after" motion
-                camera.split_recording('after.mjpeg')
+                camera.split_recording('after.h264')
                 # Write the 10 seconds "before" motion to disk as well
                 write_video(stream)
                 # Wait until motion is no longer detected, then split

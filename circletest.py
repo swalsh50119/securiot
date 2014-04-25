@@ -6,6 +6,7 @@ import numpy as np
 
 
 def write_now():
+    camera.capture('1.jpg', use_video_port=True)
     data = np.fromstring(stream.getvalue(),dtype=np.uint8)
     img = cv2.imdecode(data,1)
     #img = stream.seek(0)
