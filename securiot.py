@@ -45,7 +45,7 @@ class App(object):
         #cv2.createTrackbar('thrs2', 'edge', 200, 3000, nothing)
 
         #Paramters to tune
-        self.calib_len = 10
+        self.calib_len = 20
         self.var_scale = 2
         self.memory_max_len = 5
 
@@ -94,6 +94,9 @@ class App(object):
         stream.seek(0)
         stream.truncate()
 
+    def send_first(self,img):
+        cv2.imwrite('init_pic.jpg',img)
+
     def add_focus(self):
         self.temp_area.append([])
         self.calib.append(0)
@@ -113,25 +116,6 @@ class App(object):
         self.area_var.pop(i) 
         self.selection.pop(i)     
 
-    def onmouse(self, event, x, y, flags, param):
-        x, y = np.int16([x, y]) # BUG
-        if event == cv2.EVENT_LBUTTONDOWN:
-            App.add_focus(self)
-            self.drag_start = (x, y)
-        if event == cv2.EVENT_LBUTTONUP:
-            if self.curr_selection is not None:
-                self.tracking_state = 1
-                self.selection.append(self.curr_selection)
-        if self.drag_start:
-            if flags & cv2.EVENT_FLAG_LBUTTON:
-                h, w = self.frame.shape[:2]
-                xo, yo = self.drag_start
-                x0, y0 = np.maximum(0, np.minimum([xo, yo], [x, y]))
-                x1, y1 = np.minimum([w, h], np.maximum([xo, yo], [x, y]))
-                self.curr_selection = None
-                if x1-x0 > 0 and y1-y0 > 0:
-                    self.curr_selection = (x0, y0, x1, y1)
-
     def send_sms(self):
         server = smtplib.SMTP( "smtp.gmail.com", 587 )
         server.starttls()
@@ -141,7 +125,6 @@ class App(object):
     def on_steal(self,i):
         print "ALERT"
         #App.send_sms(self)
-
 
     def check_obj(self,area_arr,i):
         if self.stolen[i] == 1:
@@ -187,8 +170,9 @@ class App(object):
             while True:
                 camera.wait_recording(0.3)
                 self.frame = App.take_pic(self,camera)
-                #if not self.selection and not self.tracking_state:
-                    #App.send_first()
+                if not self.selection and not self.tracking_state:
+                    App.send_first(self.frame)
+                    #App.check_server()
                 if self.selection and self.tracking_state:
                     for s in self.selection:
                         ind = self.selection.index(s)
