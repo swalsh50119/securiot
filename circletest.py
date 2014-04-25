@@ -19,7 +19,7 @@ def write_video(stream):
             output.write(stream.read())
 
 with picamera.PiCamera() as camera:
-    stream = picamera.PiCameraCircularIO(camera, seconds=20)
+    stream = picamera.PiCameraCircularIO(camera, seconds=5)
     camera.start_recording(stream, format='h264')
     try:
         while True:
