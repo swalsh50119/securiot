@@ -51,8 +51,8 @@ with picamera.PiCamera() as camera:
                 write_video(stream)
                 # Wait until motion is no longer detected, then split
                 # recording back to the in-memory circular buffer
-                while detect_motion(camera):
-                    camera.wait_recording(1)
+                if detect_motion(camera):
+                    camera.wait_recording(7)
                 print('Motion stopped!')
                 camera.split_recording(stream)
                 break
