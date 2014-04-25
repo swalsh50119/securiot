@@ -1,8 +1,14 @@
 import io
 import random
 import picamera
+import cv2
+
 
 def write_now():
+    img = stream.seek(0)
+    cv2.imshow('Work plz',img)
+    cv2.waitkey(0)
+    cv2.destroyAllWindows()
     # Randomly return True (like a fake motion detection routine)
     return 0==0
 
@@ -28,8 +34,8 @@ with picamera.PiCamera() as camera:
             if write_now():
                 # Keep recording for 5 seconds and only then write the
                 # stream to disk
-                camera.wait_recording(5)
-                write_video(stream)
+                #camera.wait_recording(5)
+                #write_video(stream)
                 print "Done writing"
                 break
             break
