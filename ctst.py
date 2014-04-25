@@ -1,30 +1,18 @@
 import io
 import random
 import picamera
-import numpy as np
-import cv2
-
-prior_image = None
+from PIL import Image
 
 def detect_motion(camera):
     global prior_image
     stream = io.BytesIO()
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
-    data = np.fromstring(stream.getvalue(),dtype=np.uint8)
-    frame=cv2.imdecode(data,1)
-    if prior_image is None:
-        prior_image = frame
-        return False
-    else:
-        current_image = frame
-        # Compare current_image to prior_image to detect motion. This is
-        # left as an exercise for the reader!
-        result = random.randint(0, 10) == 0
-        print "here"
-        # Once motion detection is done, make the prior image the current
-        prior_image = current_image
-        return result
+    current_image = Image.open(stream)
+    # Compare current_image to prior_image to detect motion. This is
+    # left as an exercise for the reader!
+    result = random.randint(0, 10) == 0
+    return result
 
 def write_video(stream):
     # Write the entire content of the circular buffer to disk. No need to
@@ -44,14 +32,10 @@ def write_video(stream):
     stream.seek(0)
     stream.truncate()
 
-print "start"
 with picamera.PiCamera() as camera:
-    print "1"
     camera.resolution = (1280, 720)
-    stream = picamera.PiCameraCircularIO(camera, seconds=2)
-    print "2"
+    stream = picamera.PiCameraCircularIO(camera, seconds=10)
     camera.start_recording(stream, format='mjpeg')
-    print "line 49"
     try:
         while True:
             camera.wait_recording(1)
