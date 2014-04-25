@@ -11,7 +11,7 @@ def detect_motion(camera):
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
     current_image = Image.open(stream)
-    imcg = cv2.cvtColor(np.asarray(current_image), cv2.COLOR_RGB2BGR)
+    img = cv2.cvtColor(np.asarray(current_image), cv2.COLOR_RGB2BGR)
     cv2.imshow('Here',img)
     cv2.waitKey(0)
     # Compare current_image to prior_image to detect motion. This is
