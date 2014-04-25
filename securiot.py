@@ -44,7 +44,7 @@ class App(object):
         self.check_num = [0]
         self.stolen = [0]
 
-        self.selection = [(150,200,300,400)]
+        self.selection = [(150,180,300,300)]
         self.curr_selection = None
         self.drag_start = None
         self.init_img_sent = False
