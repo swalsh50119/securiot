@@ -207,7 +207,7 @@ class App(object):
                         #Do initial calibration then checking of the target
                         App.check_obj(self,area_arr,ind)
                         winname = 'Focus' + str(ind)
-                        #cv2.imshow(winname,preview)
+                        cv2.imshow(winname,preview)
                 ch = 0xFF & cv2.waitKey(1)
                 if ch == 27:
                     break
