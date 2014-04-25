@@ -57,7 +57,7 @@ class App(object):
         self.check_num = [0]
         self.stolen = [0]
 
-        self.selection = [(200,200,400,400)]
+        self.selection = [(150,200,300,400)]
         self.curr_selection = None
         self.drag_start = None
         self.tracking_state = 1
@@ -75,6 +75,25 @@ class App(object):
         current_image = Image.open(stream)
         img = cv2.cvtColor(np.asarray(current_image), cv2.COLOR_RGB2BGR)
         return img
+
+    def write_video(self,stream):
+        # Write the entire content of the circular buffer to disk. No need to
+        # lock the stream here as we're definitely not writing to it
+        # simultaneously
+        with io.open('before.h264', 'wb') as output:
+            for frame in stream.frames:
+                if frame.header:
+                    stream.seek(frame.position)
+                    break
+            while True:
+                buf = stream.read1()
+                if not buf:
+                    break
+                output.write(buf)
+        # Wipe the circular stream once we're done
+        stream.seek(0)
+        stream.truncate()
+
 
     def add_memory(self):
         files = glob.glob('./memory/*')
@@ -170,6 +189,7 @@ class App(object):
             if abs(np.mean(self.temp_area[i])-self.area_mean[i]) > self.check_num[i]:
                 self.stolen[i] = 1
                 App.on_steal(self,i)
+                return True
                 #Call Alert function
 
     def run(self):
@@ -205,7 +225,15 @@ class App(object):
                         area_arr.sort()
                         #print area_arr
                         #Do initial calibration then checking of the target
-                        App.check_obj(self,area_arr,ind)
+                        if App.check_obj(self,area_arr,ind):
+                            print 'Alert, object stolen!'
+                            camera.split_recording('after.h264')
+                            # Write the 10 seconds "before" motion to disk as well
+                            App.write_video(self,stream)
+                            # Wait until motion is no longer detected, then split
+                            # recording back to the in-memory circular buffer
+                            camera.wait_recording(10)
+                            camera.split_recording(stream)
                         winname = 'Focus' + str(ind)
                         cv2.imshow(winname,preview)
                 ch = 0xFF & cv2.waitKey(1)
