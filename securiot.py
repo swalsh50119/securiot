@@ -177,6 +177,9 @@ class App(object):
             camera.resolution = (640, 480)
             stream = picamera.PiCameraCircularIO(camera, seconds=10)
             camera.start_recording(stream, format='h264')
+            camera.wait_recording(10)
+
+        '''
         while True:
             camera.wait_recording(1)
             self.frame = App.take_pic(self,camera)
@@ -211,8 +214,9 @@ class App(object):
             ch = 0xFF & cv2.waitKey(1)
             if ch == 27:
                 break
-        cv2.destroyAllWindows()
-        camera.stop_recording()
+        '''
+            cv2.destroyAllWindows()
+            camera.stop_recording()
 
 if __name__ == '__main__':
     #import socket
