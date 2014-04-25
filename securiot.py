@@ -168,6 +168,7 @@ class App(object):
     def run(self):
         with picamera.PiCamera() as camera:
             camera.resolution = (640, 480)
+            camera.ISO = 100
             stream = picamera.PiCameraCircularIO(camera, seconds=3)
             camera.start_recording(stream, format='h264')
             while True:
