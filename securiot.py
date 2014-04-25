@@ -94,17 +94,6 @@ class App(object):
         stream.seek(0)
         stream.truncate()
 
-
-    def add_memory(self):
-        files = glob.glob('./memory/*')
-        files_sort = sorted(files, key=os.path.getmtime)
-        if len(files) > self.memory_max_len:
-            os.remove(files_sort[0])
-        self.memory.append(np.copy(self.frame))
-        name = 'memory/' + str(int(time.time())) + '.jpg'
-        cv2.imwrite(name,self.frame)
-
-
     def add_focus(self):
         self.temp_area.append([])
         self.calib.append(0)
@@ -152,11 +141,6 @@ class App(object):
     def on_steal(self,i):
         print "ALERT"
         #App.send_sms(self)
-        self.steal_mem.append(np.copy(self.memory))
-        #for img in self.steal_mem[i]
-        print 'just copied' 
-        cv2.imshow('Recording of Theft',self.steal_mem[0])
-        ch = 0xFF & cv2.waitKey(0)
 
 
     def check_obj(self,area_arr,i):
@@ -172,6 +156,7 @@ class App(object):
             self.temp_area[i].append(sum(area_arr[-4:]))
             self.calib[i] += 1
             print self.calib[i]
+            return False
         elif self.calib[i] == self.calib_len:
             self.ref_img[i] = np.copy(self.frame)
             self.area_mean[i] = np.mean(self.temp_area[i])
@@ -183,14 +168,16 @@ class App(object):
             print self.area_mean
             print self.check_num
             self.calib[i] += 1
+            return False
         elif self.calib[i] > self.calib_len and not self.stolen[i]:
             self.temp_area[i].pop(0)
             self.temp_area[i].append(sum(area_arr[-4:]))
             if abs(np.mean(self.temp_area[i])-self.area_mean[i]) > self.check_num[i]:
                 self.stolen[i] = 1
-                App.on_steal(self,i)
+                #App.on_steal(self,i)
                 return True
                 #Call Alert function
+            return False
 
     def run(self):
         with picamera.PiCamera() as camera:
