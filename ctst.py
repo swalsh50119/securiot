@@ -10,17 +10,12 @@ def detect_motion(camera):
     stream = io.BytesIO()
     camera.capture(stream, format='jpeg', use_video_port=True)
     stream.seek(0)
-    if prior_image is None:
-        prior_image = Image.open(stream)
-        return False
-    else:
-        current_image = Image.open(stream)
-        # Compare current_image to prior_image to detect motion. This is
-        # left as an exercise for the reader!
-        result = random.randint(0, 10) == 0
-        # Once motion detection is done, make the prior image the current
-        prior_image = current_image
-        return result
+    current_image = Image.open(stream)
+    # Compare current_image to prior_image to detect motion. This is
+    # left as an exercise for the reader!
+    result = True
+    # Once motion detection is done, make the prior image the current
+    return result
 
 def write_video(stream):
     # Write the entire content of the circular buffer to disk. No need to
