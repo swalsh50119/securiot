@@ -93,7 +93,7 @@ class App(object):
             write_server(message="downloadsnapshot")
         elif msg == "cameraon":
             self.cameraon = True
-        elif msg = "cameraoff":
+        elif msg == "cameraoff":
             self.cameraon = False
 
 
