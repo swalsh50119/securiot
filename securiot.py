@@ -87,7 +87,6 @@ class App(object):
         print msg
         if msg == "cameraon":
             self.cameraon = True
-            App.write_server(self,message="picameraon")
         if self.cameraon:
             if msg[0:6] == "target":
                 self.selection.append(ast.literal_eval(msg[6:]))
@@ -115,6 +114,7 @@ class App(object):
     def send_first(self,img):
         cv2.imwrite('init_pic.jpg',img)
         App.write_server(self,file_name="init_pic.jpg")
+        App.write_server(self,message="downloadinitpic")
         self.init_img_sent = True
         print 'init_pic sent'
 
