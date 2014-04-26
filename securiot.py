@@ -115,7 +115,7 @@ class App(object):
                 App.write_server(self,file_name="snapshot.jpg")
                 App.write_server(self,message="downloadsnapshot")
             elif msg == "cameraoff":
-                App.reset_app()
+                self.cameraon = False
                 App.write_server(self,message="picameraoff")
 
     #Write files/data to the server
@@ -267,6 +267,7 @@ class App(object):
                 if (int(time.time()) - self.last_read) > self.read_delay:
                     App.read_server(self)
                     self.last_read = int(time.time())
+                    App.reset_app()
 
 
 if __name__ == '__main__':
