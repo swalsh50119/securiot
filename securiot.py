@@ -85,16 +85,17 @@ class App(object):
         #Message: target(x0,y0,x1,y1)
         if msg[0:6] == "target":
             self.selection.append(ast.literal_eval(msg[6:]))
-            write_server(message="theftfalse")
+            App.write_server(message="theftfalse")
         #Message: request
         elif msg == "requestsnapshot":
             cv2.imwrite('snapshot.jpg',self.frame)
-            write_server(file_name="snapshot.jpg")
-            write_server(message="downloadsnapshot")
+            App.write_server(file_name="snapshot.jpg")
+            App.write_server(message="downloadsnapshot")
         elif msg == "cameraon":
             self.cameraon = True
         elif msg == "cameraoff":
             self.cameraon = False
+            App.write_server(message="cameraoff")
 
 
     #Write files/data to the server
@@ -108,7 +109,7 @@ class App(object):
     #Send the initial image for focus region ID
     def send_first(self,img):
         cv2.imwrite('init_pic.jpg',img)
-        write_server(file_name="init_pic.jpg")
+        App.write_server(file_name="init_pic.jpg")
         self.init_img_sent = True
         print 'init_pic sent'
 
@@ -189,13 +190,13 @@ class App(object):
                     camera.resolution = (640, 480)
                     stream = picamera.PiCameraCircularIO(camera, seconds=2)
                     camera.start_recording(stream, format='h264')
-                    write_server(message="picameron")
+                    App.write_server(message="picameron")
                     while self.cameraon:
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
                         #Read server for updates
                         if (int(time.time()) - self.last_read) > self.read_delay:
-                            read_server(self)
+                            App.read_server(self)
                             self.last_read = int(time.time())
                         #Send initial image for target location
                         if not self.init_img_sent:
@@ -203,7 +204,7 @@ class App(object):
                         #Wait for response from user
                         if self.init_img_sent and not self.selection:
                             time.sleep(1)
-                            read_server(self)
+                            App.read_server(self)
                         if self.selection:
                             for s in self.selection:
                                 ind = self.selection.index(s)
@@ -244,7 +245,7 @@ class App(object):
                     camera.stop_recording()
             else:
                 if (int(time.time()) - self.last_read) > self.read_delay:
-                    read_server(self)
+                    App.read_server(self)
                     self.last_read = int(time.time())
 
 
