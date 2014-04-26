@@ -55,6 +55,24 @@ class App(object):
         self.read_delay = 4
         self.cameraon = False
 
+    def reset_app(self):
+        self.temp_area = [[]]
+        self.calib = [0]
+        self.area_mean = [0]
+        self.area_var = [0]
+        self.check_num = [0]
+        self.stolen = [0]
+        self.selection = []#(150,180,300,300)]
+        self.curr_selection = None
+        self.drag_start = None
+        self.init_img_sent = False
+        self.tracking_state = 0
+        self.memory = []
+        self.steal_mem=[]
+        self.last_read = int(time.time())
+        self.read_delay = 4
+        self.cameraon = False
+
     #Take picture and convert into CV2 format
     def take_pic(self,camera):
         stream = io.BytesIO()
@@ -97,8 +115,7 @@ class App(object):
                 App.write_server(self,file_name="snapshot.jpg")
                 App.write_server(self,message="downloadsnapshot")
             elif msg == "cameraoff":
-                self.cameraon = False
-                self.init_img_sent = True
+                App.reset_app()
                 App.write_server(self,message="picameraoff")
 
     #Write files/data to the server
