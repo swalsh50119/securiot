@@ -90,9 +90,7 @@ class App(object):
         if self.cameraon:
             if msg[0:6] == "target":
                 self.selection.append(ast.literal_eval(msg[6:]))
-                print "1here"
                 App.write_server(self,message="theftfalse")
-                print "2here"
             #Message: request
             elif msg == "requestsnapshot":
                 cv2.imwrite('snapshot.jpg',self.frame)
@@ -100,6 +98,7 @@ class App(object):
                 App.write_server(self,message="downloadsnapshot")
             elif msg == "cameraoff":
                 self.cameraon = False
+                self.init_img_sent = True
                 App.write_server(self,message="picameraoff")
 
     #Write files/data to the server
