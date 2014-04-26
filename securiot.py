@@ -251,12 +251,14 @@ class App(object):
                             break
                     print "251"
                     cv2.destroyAllWindows()
-                    print "253"
-                    camera.stop_recording()
+                    if not self.cameraon
+                        camera.stop_recording()
             else:
                 if (int(time.time()) - self.last_read) > self.read_delay:
                     App.read_server(self)
                     self.last_read = int(time.time())
+            if not self.cameraon
+                        camera.stop_recording()
 
 
 if __name__ == '__main__':
