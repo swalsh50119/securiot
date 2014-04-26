@@ -101,11 +101,13 @@ class App(object):
 
     #Write files/data to the server
     def write_server(file_name="info.txt",message=""):
+        print "inwrite"
         if file_name == "info.txt":
             fil = open(file_name,"w")
             fil.write(message)
             fil.close()
         subprocess.call("./to_send " + file_name, shell=True)
+        print "exitwrite"
 
     #Send the initial image for focus region ID
     def send_first(self,img):
