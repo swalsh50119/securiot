@@ -190,6 +190,7 @@ class App(object):
 
     #Main function for the application
     def run(self):
+        App.write_server(message="this is a test")
         while True:
             if self.cameraon:
                 with picamera.PiCamera() as camera:
@@ -263,5 +264,4 @@ class App(object):
 
 
 if __name__ == '__main__':
-    App(0).write_server(message="test")
-    #App(0).run()
+    App(0).run()
