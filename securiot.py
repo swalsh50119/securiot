@@ -87,6 +87,7 @@ class App(object):
         print msg
         if msg == "cameraon":
             self.cameraon = True
+            App.write_server(self,message="picameraon")
         if self.cameraon:
             if msg[0:6] == "target":
                 self.selection.append(ast.literal_eval(msg[6:]))
@@ -100,7 +101,7 @@ class App(object):
                 App.write_server(self,message="downloadsnapshot")
             elif msg == "cameraoff":
                 self.cameraon = False
-                App.write_server(self,message="cameraoff")
+                App.write_server(self,message="picameraoff")
 
     #Write files/data to the server
     def write_server(self,file_name="info.txt",message=""):
@@ -197,7 +198,7 @@ class App(object):
                     #camera.wait_recording(0.3)
                     #print "195"
                     #App.write_server(self,message="picameron")
-                    while True: #self.cameraon:
+                    while self.cameraon:
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
                         #Read server for updates
@@ -245,8 +246,7 @@ class App(object):
                         if ch == 27:
                             break
                     cv2.destroyAllWindows()
-                    #if not self.cameraon:
-                        #camera.stop_recording()
+                    camera.stop_recording()
             else:
                 if (int(time.time()) - self.last_read) > self.read_delay:
                     App.read_server(self)

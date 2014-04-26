@@ -2,9 +2,9 @@ import subprocess
 
 def read_server(file_name="info.txt"):
 	subprocess.call("./to_receive " + file_name, shell=True)
-	fil = open(file_name,"r")
-	message = fil.readline()
-	return message
+	#fil = open(file_name,"r")
+	#message = fil.readline()
+	#return message
 
 def write_server(file_name="info.txt",message=""):
 	if file_name == "info.txt":
@@ -13,4 +13,7 @@ def write_server(file_name="info.txt",message=""):
 		fil.close()
 	subprocess.call("./to_send " + file_name, shell=True)
 
-write_server(message="target(200,200,300,300)")
+#write_server(message="cameraon")
+write_server(message="target(100,100,150,200)")
+#write_server(message="requestsnapshot")
+#read_server(file_name="snapshot.jpg")
