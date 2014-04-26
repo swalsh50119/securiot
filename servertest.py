@@ -13,8 +13,4 @@ def write_server(file_name="info.txt",message=""):
 		fil.close()
 	subprocess.call("./to_send " + file_name, shell=True)
 
-write_server(message="THIS IS SEAN HELLO")
-message = read_server()
-print message
-write_server("after.h264")
-
+write_server(message="cameraon")
