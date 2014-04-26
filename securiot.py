@@ -247,8 +247,8 @@ class App(object):
                     cv2.destroyAllWindows()
                     print self.cameraon
                     print "250"
-                    if not self.cameraon:
-                        camera.stop_recording()
+                    #if not self.cameraon:
+                        #camera.stop_recording()
             else:
                 if (int(time.time()) - self.last_read) > self.read_delay:
                     App.read_server(self)
