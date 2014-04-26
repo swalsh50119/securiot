@@ -86,17 +86,17 @@ class App(object):
         #Message: target(x0,y0,x1,y1)
         if msg[0:6] == "target":
             self.selection.append(ast.literal_eval(msg[6:]))
-            App.write_server(message="theftfalse")
+            App.write_server(self,message="theftfalse")
         #Message: request
         elif msg == "requestsnapshot":
             cv2.imwrite('snapshot.jpg',self.frame)
-            App.write_server(file_name="snapshot.jpg")
-            App.write_server(message="downloadsnapshot")
+            App.write_server(self,file_name="snapshot.jpg")
+            App.write_server(self,message="downloadsnapshot")
         elif msg == "cameraon":
             self.cameraon = True
         elif msg == "cameraoff":
             self.cameraon = False
-            App.write_server(message="cameraoff")
+            App.write_server(self,message="cameraoff")
 
     #Write files/data to the server
     def write_server(self,file_name="info.txt",message=""):
@@ -189,7 +189,6 @@ class App(object):
 
     #Main function for the application
     def run(self):
-        App.write_server(self,message="this is a test")
         while True:
             if self.cameraon:
                 with picamera.PiCamera() as camera:
@@ -237,16 +236,16 @@ class App(object):
                                 #Object has been stolen
                                 if App.check_obj(self,area_arr,ind):
                                     print 'Alert, object stolen!'
-                                    write_server(message="thefttrue")
+                                    write_server(self,message="thefttrue")
                                     camera.split_recording('after.h264')
                                     # Write the 10 seconds "before" motion to disk
                                     App.write_video(self,stream)
                                     # Record 10s after steal
                                     camera.wait_recording(10)
                                     camera.split_recording(stream)
-                                    write_server(file_name="before.h264")
-                                    write_server(file_name="after.h264")
-                                    write_server(message="downloadvideo")
+                                    write_server(self,file_name="before.h264")
+                                    write_server(self,file_name="after.h264")
+                                    write_server(self,message="downloadvideo")
                                     rm_focus(self,ind)
                                 winname = 'Focus' + str(ind)
                                 cv2.imshow(winname,preview)
