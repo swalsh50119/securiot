@@ -111,8 +111,11 @@ class App(object):
 
     #Send the initial image for focus region ID
     def send_first(self,img):
+        print "114"
         cv2.imwrite('init_pic.jpg',img)
+        print "116"
         App.write_server(file_name="init_pic.jpg")
+        print "118"
         self.init_img_sent = True
         print 'init_pic sent'
 
