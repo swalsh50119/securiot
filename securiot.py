@@ -187,6 +187,7 @@ class App(object):
     def run(self):
         while True:
             if self.cameraon:
+                print self.cameraon
                 with picamera.PiCamera() as camera:
                     camera.resolution = (640, 480)
                     stream = picamera.PiCameraCircularIO(camera, seconds=2)
