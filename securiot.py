@@ -246,16 +246,16 @@ class App(object):
                                 #Object has been stolen
                                 if App.check_obj(self,area_arr,ind):
                                     print 'Alert, object stolen!'
-                                    write_server(self,message="thefttrue")
+                                    App.write_server(self,message="thefttrue")
                                     camera.split_recording('after.h264')
                                     # Write the 10 seconds "before" motion to disk
                                     App.write_video(self,stream)
                                     # Record 10s after steal
                                     camera.wait_recording(10)
                                     camera.split_recording(stream)
-                                    write_server(self,file_name="before.h264")
-                                    write_server(self,file_name="after.h264")
-                                    write_server(self,message="downloadvideo")
+                                    App.write_server(self,file_name="before.h264")
+                                    App.write_server(self,file_name="after.h264")
+                                    App.write_server(self,message="downloadvideo")
                                     rm_focus(self,ind)
                                 winname = 'Focus' + str(ind)
                                 cv2.imshow(winname,preview)
