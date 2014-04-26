@@ -194,10 +194,11 @@ class App(object):
                     #camera.wait_recording(0.3)
                     #print "195"
                     #App.write_server(message="picameron")
-                    while self.cameraon:
+                    while True: #self.cameraon:
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
                         #Read server for updates
+                        print "201"
                         if (int(time.time()) - self.last_read) > self.read_delay:
                             App.read_server(self)
                             self.last_read = int(time.time())
