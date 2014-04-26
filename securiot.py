@@ -205,6 +205,7 @@ class App(object):
 
     #Main function for the application
     def run(self):
+        App.write_server(message="piloaded")
         while True:
             if self.cameraon:
                 with picamera.PiCamera() as camera:
