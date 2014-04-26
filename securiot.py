@@ -110,10 +110,9 @@ class App(object):
 
     #Send the initial image for focus region ID
     def send_first(self,img):
-        print "114"
         cv2.imwrite('init_pic.jpg',img)
         print "116"
-        App.write_server(file_name="init_pic.jpg")
+        App.write_server(self,file_name="init_pic.jpg")
         print "118"
         self.init_img_sent = True
         print 'init_pic sent'
@@ -207,9 +206,7 @@ class App(object):
                             App.read_server(self)
                             self.last_read = int(time.time())
                         #Send initial image for target location
-                        print "206"
                         if not self.init_img_sent:
-                            print "208"
                             App.send_first(self,self.frame)
                             print "209"
                         #Wait for response from user
