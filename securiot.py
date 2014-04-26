@@ -98,7 +98,6 @@ class App(object):
             self.cameraon = False
             App.write_server(message="cameraoff")
 
-
     #Write files/data to the server
     def write_server(file_name="info.txt",message=""):
         print "inwrite"
