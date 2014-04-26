@@ -84,23 +84,23 @@ class App(object):
         subprocess.call("./to_receive " + file_name, shell=True)
         fil = open(file_name,"r")
         msg = fil.readline()
-        #Message: target(x0,y0,x1,y1)
         print msg
-        if msg[0:6] == "target":
-            self.selection.append(ast.literal_eval(msg[6:]))
-            print "1here"
-            App.write_server(self,message="theftfalse")
-            print "2here"
-        #Message: request
-        elif msg == "requestsnapshot":
-            cv2.imwrite('snapshot.jpg',self.frame)
-            App.write_server(self,file_name="snapshot.jpg")
-            App.write_server(self,message="downloadsnapshot")
-        elif msg == "cameraon":
+        if msg == "cameraon":
             self.cameraon = True
-        elif msg == "cameraoff":
-            self.cameraon = False
-            App.write_server(self,message="cameraoff")
+        if self.cameraon:
+            if msg[0:6] == "target":
+                self.selection.append(ast.literal_eval(msg[6:]))
+                print "1here"
+                App.write_server(self,message="theftfalse")
+                print "2here"
+            #Message: request
+            elif msg == "requestsnapshot":
+                cv2.imwrite('snapshot.jpg',self.frame)
+                App.write_server(self,file_name="snapshot.jpg")
+                App.write_server(self,message="downloadsnapshot")
+            elif msg == "cameraoff":
+                self.cameraon = False
+                App.write_server(self,message="cameraoff")
 
     #Write files/data to the server
     def write_server(self,file_name="info.txt",message=""):

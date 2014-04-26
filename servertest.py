@@ -13,4 +13,4 @@ def write_server(file_name="info.txt",message=""):
 		fil.close()
 	subprocess.call("./to_send " + file_name, shell=True)
 
-write_server(message="target(200,200,300,300")
+write_server(message="target(200,200,300,300)")
