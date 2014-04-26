@@ -268,7 +268,7 @@ class App(object):
                 if (int(time.time()) - self.last_read) > self.read_delay:
                     App.read_server(self)
                     self.last_read = int(time.time())
-                    App.reset_app()
+                    App.reset_app(self)
 
 
 if __name__ == '__main__':
