@@ -195,6 +195,7 @@ class App(object):
                     stream = picamera.PiCameraCircularIO(camera, seconds=2)
                     print "196"
                     camera.start_recording(stream, format='h264')
+                    camera.wait_recording(0.3)
                     print "198"
                     App.write_server(message="picameron")
                     print "200"
