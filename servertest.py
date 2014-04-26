@@ -15,9 +15,11 @@ def write_server(file_name="info.txt",message=""):
 		fil.close()
 	subprocess.call("./to_send " + file_name, shell=True)
 
-write_server(message="cameraon")
-time.sleep(8)
+#write_server(message="cameraon")
+#time.sleep(8)
 #write_server(message="cameraoff")
 write_server(message="target(100,100,150,200)")
 #write_server(message="requestsnapshot")
 #read_server(file_name="snapshot.jpg")
+read_server(file_name="before.h264")
+read_server(file_name="after.h264")
