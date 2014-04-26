@@ -202,17 +202,12 @@ class App(object):
                         self.frame = App.take_pic(self,camera)
                         #Read server for updates
                         if (int(time.time()) - self.last_read) > self.read_delay:
-                            print "202"
                             App.read_server(self)
                             self.last_read = int(time.time())
                         #Send initial image for target location
                         if not self.init_img_sent:
                             App.send_first(self,self.frame)
-                            print "209"
                         #Wait for response from user
-                        if self.init_img_sent and not self.selection:
-                            time.sleep(1)
-                            App.read_server(self)
                         if self.selection:
                             for s in self.selection:
                                 ind = self.selection.index(s)
