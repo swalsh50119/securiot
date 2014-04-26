@@ -99,7 +99,7 @@ class App(object):
             App.write_server(message="cameraoff")
 
     #Write files/data to the server
-    def write_server(file_name="info.txt",message=""):
+    def write_server(self,file_name="info.txt",message=""):
         print "inwrite"
         if file_name == "info.txt":
             fil = open(file_name,"w")
@@ -189,7 +189,7 @@ class App(object):
 
     #Main function for the application
     def run(self):
-        App.write_server(message="this is a test")
+        App.write_server(self,message="this is a test")
         while True:
             if self.cameraon:
                 with picamera.PiCamera() as camera:
@@ -198,7 +198,7 @@ class App(object):
                     camera.start_recording(stream, format='h264')
                     #camera.wait_recording(0.3)
                     #print "195"
-                    #App.write_server(message="picameron")
+                    #App.write_server(self,message="picameron")
                     while True: #self.cameraon:
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
