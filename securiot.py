@@ -257,8 +257,8 @@ class App(object):
                                     App.write_server(self,file_name="after.h264")
                                     App.write_server(self,message="downloadvideo")
                                     self.selection = []
-                                winname = 'Focus'
-                                cv2.imshow(winname,preview)
+                                #winname = 'Focus'
+                                #cv2.imshow(winname,preview)
                         ch = 0xFF & cv2.waitKey(1)
                         if ch == 27:
                             break
