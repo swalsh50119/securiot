@@ -91,9 +91,9 @@ class App(object):
             cv2.imwrite('snapshot.jpg',self.frame)
             write_server(file_name="snapshot.jpg")
             write_server(message="downloadsnapshot")
-        elif msg == "cameraon"
+        elif msg == "cameraon":
             self.cameraon = True
-        elif msg = "cameraoff"
+        elif msg = "cameraoff":
             self.cameraon = False
 
 
@@ -194,7 +194,7 @@ class App(object):
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
                         #Read server for updates
-                        if (int(time.time()) - self.last_read) > self.read_delay
+                        if (int(time.time()) - self.last_read) > self.read_delay:
                             read_server(self)
                             self.last_read = int(time.time())
                         #Send initial image for target location
@@ -243,7 +243,7 @@ class App(object):
                     cv2.destroyAllWindows()
                     camera.stop_recording()
             else:
-                if (int(time.time()) - self.last_read) > self.read_delay
+                if (int(time.time()) - self.last_read) > self.read_delay:
                     read_server(self)
                     self.last_read = int(time.time())
 
