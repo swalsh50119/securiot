@@ -9,6 +9,7 @@ from PIL import Image
 import io
 import picamera
 import os
+import subprocess
 
 #  Securiot: The Future of Surveillance
 #   -Goal: Detect theft of objects from a desk and alert user
