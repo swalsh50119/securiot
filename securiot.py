@@ -257,7 +257,7 @@ class App(object):
                                     App.write_server(self,file_name="after.h264")
                                     App.write_server(self,message="downloadvideo")
                                     rm_focus(self,ind)
-                                winname = 'Focus' + str(ind)
+                                winname = 'Focus'
                                 cv2.imshow(winname,preview)
                         ch = 0xFF & cv2.waitKey(1)
                         if ch == 27:

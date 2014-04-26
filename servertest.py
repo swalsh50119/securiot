@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 def read_server(file_name="info.txt"):
 	subprocess.call("./to_receive " + file_name, shell=True)
@@ -15,6 +16,7 @@ def write_server(file_name="info.txt",message=""):
 	subprocess.call("./to_send " + file_name, shell=True)
 
 #write_server(message="cameraon")
+#time.sleep(6)
 #write_server(message="cameraoff")
 write_server(message="target(100,100,150,200)")
 #write_server(message="requestsnapshot")
