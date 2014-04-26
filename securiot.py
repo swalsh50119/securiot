@@ -114,8 +114,7 @@ class App(object):
         print "114"
         cv2.imwrite('init_pic.jpg',img)
         print "116"
-        App.add_focus(self)
-        #App.write_server(file_name="init_pic.jpg")
+        App.write_server(file_name="init_pic.jpg")
         print "118"
         self.init_img_sent = True
         print 'init_pic sent'
@@ -264,4 +263,5 @@ class App(object):
 
 
 if __name__ == '__main__':
-    App(0).run()
+    App(0).write_server(message="test")
+    #App(0).run()
