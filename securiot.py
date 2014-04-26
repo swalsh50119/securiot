@@ -198,13 +198,16 @@ class App(object):
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
                         #Read server for updates
-                        print "201"
                         if (int(time.time()) - self.last_read) > self.read_delay:
+                            print "202"
                             App.read_server(self)
                             self.last_read = int(time.time())
                         #Send initial image for target location
+                        print "206"
                         if not self.init_img_sent:
+                            print "208"
                             App.send_first(self,self.frame)
+                            print "209"
                         #Wait for response from user
                         if self.init_img_sent and not self.selection:
                             time.sleep(1)
