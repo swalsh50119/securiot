@@ -187,18 +187,13 @@ class App(object):
     def run(self):
         while True:
             if self.cameraon:
-                print "190"
                 with picamera.PiCamera() as camera:
-                    print "192"
                     camera.resolution = (640, 480)
-                    print "194"
                     stream = picamera.PiCameraCircularIO(camera, seconds=2)
-                    print "196"
                     camera.start_recording(stream, format='h264')
-                    camera.wait_recording(0.3)
-                    print "198"
+                    #camera.wait_recording(0.3)
+                    print "195"
                     App.write_server(message="picameron")
-                    print "200"
                     while self.cameraon:
                         camera.wait_recording(0.3)
                         self.frame = App.take_pic(self,camera)
@@ -249,8 +244,9 @@ class App(object):
                         ch = 0xFF & cv2.waitKey(1)
                         if ch == 27:
                             break
-                    print "251"
                     cv2.destroyAllWindows()
+                    print self.cameraon
+                    print "250"
                     if not self.cameraon:
                         camera.stop_recording()
             else:
