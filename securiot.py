@@ -84,9 +84,12 @@ class App(object):
         fil = open(file_name,"r")
         msg = fil.readline()
         #Message: target(x0,y0,x1,y1)
+        print msg
         if msg[0:6] == "target":
             self.selection.append(ast.literal_eval(msg[6:]))
+            print "1here"
             App.write_server(self,message="theftfalse")
+            print "2here"
         #Message: request
         elif msg == "requestsnapshot":
             cv2.imwrite('snapshot.jpg',self.frame)
@@ -100,20 +103,16 @@ class App(object):
 
     #Write files/data to the server
     def write_server(self,file_name="info.txt",message=""):
-        print "inwrite"
         if file_name == "info.txt":
             fil = open(file_name,"w")
             fil.write(message)
             fil.close()
         subprocess.call("./to_send " + file_name, shell=True)
-        print "exitwrite"
 
     #Send the initial image for focus region ID
     def send_first(self,img):
         cv2.imwrite('init_pic.jpg',img)
-        print "116"
         App.write_server(self,file_name="init_pic.jpg")
-        print "118"
         self.init_img_sent = True
         print 'init_pic sent'
 
