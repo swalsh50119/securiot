@@ -44,7 +44,7 @@ class App(object):
         self.check_num = [0]
         self.stolen = [0]
 
-        self.selection = [(150,180,300,300)]
+        self.selection = []#(150,180,300,300)]
         self.curr_selection = None
         self.drag_start = None
         self.init_img_sent = False
@@ -257,8 +257,8 @@ class App(object):
                                     App.write_server(self,file_name="after.h264")
                                     App.write_server(self,message="downloadvideo")
                                     self.selection = []
-                                winname = 'Focus'
-                                cv2.imshow(winname,preview)
+                                #winname = 'Focus'
+                                #cv2.imshow(winname,preview)
                         ch = 0xFF & cv2.waitKey(1)
                         if ch == 27:
                             break
