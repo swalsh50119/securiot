@@ -33,7 +33,7 @@ class App(object):
     def __init__(self, video_src,):
 
         #Paramters to tune
-        self.calib_len = 20
+        self.calib_len = 25
         self.var_scale = 2
         
         #Initialization
@@ -108,7 +108,7 @@ class App(object):
         if self.cameraon:
             if msg[0:6] == "target":
                 self.selection.append(ast.literal_eval(msg[6:]))
-                App.write_server(self,message="theftfalse")
+                App.write_server(self,message="calibrating")
             #Message: request
             elif msg == "requestsnapshot":
                 cv2.imwrite('snapshot.jpg',self.frame)
@@ -188,6 +188,7 @@ class App(object):
                 self.check_num[i] = self.area_mean[i]*0.15
             print self.area_mean
             print self.check_num
+            App.write_server(self,message="theftfalse")
             self.calib[i] += 1
             return False
         #Check current values versus calibration phase
