@@ -161,12 +161,6 @@ class App(object):
         server.sendmail( 'securiotalert@gmail.com', '6302207435@vtext.com', 'ALERT, Securiot has detected a security event' )
         server.sendmail( 'securiotalert@gmail.com', '8457751342@messaging.sprintpcs.com', 'ALERT, Securiot has detected a security event' )
 
-
-    #Do this once a steal is registered
-    def on_steal(self,i):
-        print "ALERT"
-        #App.send_sms(self)
-
     #Check the focus region for change in object location
     def check_obj(self,area_arr,i):
         #Print image of stolen item
@@ -248,6 +242,7 @@ class App(object):
                                 #Object has been stolen
                                 if App.check_obj(self,area_arr,ind):
                                     print 'Alert, object stolen!'
+                                    App.send_sms(self)
                                     App.write_server(self,message="thefttrue")
                                     camera.split_recording('after.h264')
                                     # Write the 10 seconds "before" motion to disk
