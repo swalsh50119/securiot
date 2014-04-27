@@ -158,7 +158,9 @@ class App(object):
         server = smtplib.SMTP( "smtp.gmail.com", 587 )
         server.starttls()
         server.login( 'securiotalert@gmail.com', 'securiot144r' )
+        server.sendmail( 'securiotalert@gmail.com', '6302207435@vtext.com', 'ALERT, Securiot has detected a security event' )
         server.sendmail( 'securiotalert@gmail.com', '8457751342@messaging.sprintpcs.com', 'ALERT, Securiot has detected a security event' )
+
 
     #Do this once a steal is registered
     def on_steal(self,i):
