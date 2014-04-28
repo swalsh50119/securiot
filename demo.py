@@ -78,7 +78,8 @@ def snapshot():
 def check_for_theft():
     print "in check_for_theft"
     if read_server() == "downloadvideo":
-        downloadvideo()
+        retutrn True
+    return False
 
 def downloadvideo():
     read_server(file_name="before.h264")
@@ -89,33 +90,33 @@ def cameraoff():
     write_server(message="cameraoff")
 
 time1 = 0
+sysarm = False
 
 while 1:
     msg ="What would you like to do"
     title = "Securiot for Desktop"
-    choices = ["Turn Camera On", "Arm System", "Take A Snapshot", "Turn Camera Off"]
-    if time1 % 2 == 0:
-        check_for_theft()
-    choice = eg.choicebox(msg, title, choices)
-    if str(choice) == "Turn Camera On":
-        eg.msgbox("Camera Turning On")
-        cameraon()
-        eg.msgbox("Camera In Now On")
-    elif str(choice) == "Arm System":
-        eg.msgbox("System is Arming")
-        arm_sys()
-        eg.msgbox("System is now armed")
-    elif str(choice) == "Take A Snapshot":
-
-        snapshot()
-        eg.msgbox("Retrieving snapshot")
-    elif str(choice) == "Turn Camera Off":
-        cameraoff()
-
-    msg = "Do you want to continue?"
-    title = "Please Confirm"
-    if eg.ccbox(msg, title):     # show a Continue/Cancel dialog
-        pass  # user chose Continue
-    else:
-        sys.exit(0)           # user chose Cancel
+    if not sysarm:
+        choices = ["Turn Camera On", "Arm System", "Take A Snapshot", "Turn Camera Off"]
+        choice = eg.choicebox(msg, title, choices)
+        if str(choice) == "Turn Camera On":
+            eg.msgbox("Camera Turning On")
+            cameraon()
+            eg.msgbox("Camera In Now On")
+        elif str(choice) == "Arm System":
+            eg.msgbox("System is Arming")
+            arm_sys()
+            eg.msgbox("System is now armed")
+        elif str(choice) == "Take A Snapshot":
+            eg.msgbox("Taking Snapshot")
+            snapshot()
+            eg.msgbox("Retrieving snapshot")
+        elif str(choice) == "Turn Camera Off":
+            eg.msgbox("Turning Camera Off")
+            cameraoff()
+            eg.msgbox("Camera Off")
+    else
+        if check_for_theft():
+            eg.msgbox("ALERT: A Theft Has Occured, Download Video Now")
+            downloadvideo()
+            eg.msgbox("Video Downloaded Successfully")
     time1 += 1
