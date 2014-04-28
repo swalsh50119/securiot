@@ -88,13 +88,13 @@ def downloadvideo():
 def cameraoff():    
     write_server(message="cameraoff")
 
-time = 0
+time1 = 0
 
 while 1:
     msg ="What would you like to do"
     title = "Securiot for Desktop"
     choices = ["Turn Camera On", "Arm System", "Take A Snapshot", "Turn Camera Off"]
-    if time % 2 == 0:
+    if time1 % 2 == 0:
         check_for_theft()
     choice = eg.choicebox(msg, title, choices)
     if str(choice) == "Turn Camera On":
@@ -117,4 +117,4 @@ while 1:
         pass  # user chose Continue
     else:
         sys.exit(0)           # user chose Cancel
-    time += 1
+    time1 += 1
