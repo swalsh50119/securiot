@@ -2,7 +2,7 @@
 # run this file this way..| python  test1.py
 import easygui as eg
 import sys
-
+import time
 import subprocess
 import time
 import cv2
@@ -106,6 +106,7 @@ while 1:
         arm_sys()
         eg.msgbox("System is now armed")
     elif str(choice) == "Take A Snapshot":
+
         snapshot()
         eg.msgbox("Retrieving snapshot")
     elif str(choice) == "Turn Camera Off":
