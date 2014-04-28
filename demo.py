@@ -119,4 +119,6 @@ while 1:
             eg.msgbox("ALERT: A Theft Has Occured, Download Video Now")
             downloadvideo()
             eg.msgbox("Video Downloaded Successfully")
+            sysarm = False
+        time.sleep(1)
     time1 += 1
