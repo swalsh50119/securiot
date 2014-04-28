@@ -76,6 +76,7 @@ def snapshot():
     cv2.destroyAllWindows()
 
 def check_for_theft():
+    print "in check_for_theft"
     if read_server() == "downloadvideo":
         downloadvideo()
 
@@ -87,10 +88,14 @@ def downloadvideo():
 def cameraoff():    
     write_server(message="cameraoff")
 
+time = 0
+
 while 1:
     msg ="What would you like to do"
     title = "Securiot for Desktop"
     choices = ["Turn Camera On", "Arm System", "Take A Snapshot", "Turn Camera Off"]
+    if time % 2 == 0:
+        check_for_theft()
     choice = eg.choicebox(msg, title, choices)
     if str(choice) == "Turn Camera On":
         eg.msgbox("Camera Turning On")
@@ -112,3 +117,4 @@ while 1:
         pass  # user chose Continue
     else:
         sys.exit(0)           # user chose Cancel
+    time += 1
