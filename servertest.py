@@ -35,10 +35,11 @@ def onmouse(event, x, y, flags, param):
 
 cv2.namedWindow('Init_img')
 cv2.setMouseCallback('Init_img', onmouse)
-
 while read_server() != "piloaded":
 	time.sleep(1)
+print "er"
 write_server(message="cameraon") 
+print "ererer"
 #write_server(message="downloadinitpic") #To comment out
 while read_server() != "downloadinitpic":
 	time.sleep(1)

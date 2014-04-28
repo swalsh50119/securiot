@@ -102,6 +102,7 @@ class App(object):
         subprocess.call("./to_receive " + file_name, shell=True)
         fil = open(file_name,"r")
         msg = fil.readline()
+        print "reading"
         print msg
         if msg == "cameraon":
             self.cameraon = True
@@ -120,6 +121,9 @@ class App(object):
 
     #Write files/data to the server
     def write_server(self,file_name="info.txt",message=""):
+        print "writing"
+        if message:
+            print message
         if file_name == "info.txt":
             fil = open(file_name,"w")
             fil.write(message)
