@@ -12,7 +12,7 @@ topcorner = None
 botcorner = None
 
 def read_server(file_name="info.txt"):
-    subprocess.call("./to_receive " + file_name, shell=True)
+    subprocess.call("./to_receive_desktop " + file_name, shell=True)
     if file_name=="info.txt":
         fil = open(file_name,"r")
         message = fil.readline()
@@ -38,7 +38,8 @@ def onmouse(event, x, y, flags, param):
         botcorner = (x,y)
 
 def cameraon():
-    while read_server() != "piloaded":
+    msg = read_server()
+    while (msg != "piloaded") and (msg != "cameraoff") and (msg != "picameraoff"):
         time.sleep(1)
     write_server(message="cameraon") 
 
@@ -76,15 +77,16 @@ def snapshot():
     cv2.destroyAllWindows()
 
 def check_for_theft():
-    print "in check_for_theft"
-    if read_server() == "downloadvideo":
-        retutrn True
+    print "Checking_for_theft"
+    if read_server() == "thefttrue":
+        return True
     return False
 
 def downloadvideo():
+    while read_server() != "downloadvideo":
+        time.sleep(1)    
     read_server(file_name="before.h264")
     read_server(file_name="after.h264")
-    return "Videos downloaded"
 
 def cameraoff():    
     write_server(message="cameraoff")
@@ -101,22 +103,22 @@ while 1:
         if str(choice) == "Turn Camera On":
             eg.msgbox("Camera Turning On")
             cameraon()
-            eg.msgbox("Camera In Now On")
+            eg.msgbox("Camera Is Now On")
         elif str(choice) == "Arm System":
             eg.msgbox("System is Arming")
             arm_sys()
+            sysarm = True
             eg.msgbox("System is now armed")
         elif str(choice) == "Take A Snapshot":
             eg.msgbox("Taking Snapshot")
             snapshot()
-            eg.msgbox("Retrieving snapshot")
         elif str(choice) == "Turn Camera Off":
             eg.msgbox("Turning Camera Off")
             cameraoff()
             eg.msgbox("Camera Off")
-    else
+    else:
         if check_for_theft():
-            eg.msgbox("ALERT: A Theft Has Occured, Download Video Now")
+            eg.msgbox("ALERT: A Theft Has Occured, Downloading Video Now")
             downloadvideo()
             eg.msgbox("Video Downloaded Successfully")
             sysarm = False
