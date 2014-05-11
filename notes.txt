@@ -1,1 +1,0 @@
-ssh -i ~/proj/144r_2.pem ubuntu@ec2-54-187-50-133.us-west-2.compute.amazonaws.com 

@@ -40,17 +40,17 @@ def onmouse(event, x, y, flags, param):
 def cameraon():
     msg = read_server()
     while (msg != "piloaded") and (msg != "cameraoff") and (msg != "picameraoff"):
-        time.sleep(1)
+        time.sleep(2)
     write_server(message="cameraon") 
 
 def arm_sys():
-    #write_server(message="downloadinitpic") #To comment out
     cv2.namedWindow('Init_img')
     cv2.setMouseCallback('Init_img', onmouse)
     while read_server() != "downloadinitpic":
-        time.sleep(1)
+        time.sleep(2)
     read_server(file_name="init_pic.jpg")
     init_img = cv2.imread('init_pic.jpg')
+    eg.msgbox("To set the target area in the following image, click on the top-left and bottom-right corners of a rectangle that will bound the object. Press 'Enter' and the Image will show the selected region. Press eneter again to send to Securiot.")
     cv2.imshow("Init_img",init_img)
     ch = cv2.waitKey(0) & 0xFF
     x0, y0 = topcorner
@@ -69,7 +69,7 @@ def arm_sys():
 def snapshot():
     write_server(message="requestsnapshot")
     while read_server() != "downloadsnapshot":
-        time.sleep(1)
+        time.sleep(2)
     read_server(file_name="snapshot.jpg")
     snapshot = cv2.imread('snapshot.jpg')
     cv2.imshow("Snapshot",snapshot)
@@ -84,7 +84,7 @@ def check_for_theft():
 
 def downloadvideo():
     while read_server() != "downloadvideo":
-        time.sleep(1)    
+        time.sleep(2)    
     read_server(file_name="before.h264")
     read_server(file_name="after.h264")
 
@@ -108,7 +108,7 @@ while 1:
             eg.msgbox("System is Arming")
             arm_sys()
             sysarm = True
-            eg.msgbox("System is now armed")
+            eg.msgbox("System is now armed. Application will notify you when an alert occurs.")
         elif str(choice) == "Take A Snapshot":
             eg.msgbox("Taking Snapshot")
             snapshot()

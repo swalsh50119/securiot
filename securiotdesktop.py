@@ -7,7 +7,6 @@ import smtplib
 import time
 from PIL import Image
 import io
-import picamera
 import os
 import subprocess
 import ast
@@ -31,7 +30,7 @@ def nothing(*arg):
 
 class App(object):
     def __init__(self, video_src,):
-
+        self.cam = video.create_capture(video_src)
         #Paramters to tune
         self.calib_len = 25
         self.var_scale = 2
@@ -74,16 +73,13 @@ class App(object):
         self.cameraon = False
 
     #Take picture and convert into CV2 format
-    def take_pic(self,camera):
-        stream = io.BytesIO()
-        camera.capture(stream, format='jpeg', use_video_port=True)
-        stream.seek(0)
-        current_image = Image.open(stream)
-        img = cv2.cvtColor(np.asarray(current_image), cv2.COLOR_RGB2BGR)
+    def take_pic(self):
+        ret, img = self.cam.read()
         return img
 
     #Write the entire circular buffer to disk
-    def write_video(self,stream):
+    def write_video(self):
+        '''
         with io.open('before.h264', 'wb') as output:
             for frame in stream.frames:
                 if frame.header:
@@ -96,10 +92,12 @@ class App(object):
                 output.write(buf)
         stream.seek(0)
         stream.truncate()
-    
+        '''
+        return True
+
     #Read the server files for information
     def read_server(self,file_name="info.txt"):
-        subprocess.call("./to_receive " + file_name, shell=True)
+        subprocess.call("./to_receive_desktop " + file_name, shell=True)
         fil = open(file_name,"r")
         msg = fil.readline()
         print "reading"
@@ -107,7 +105,7 @@ class App(object):
         if msg == "cameraon":
             self.cameraon = True
         if self.cameraon:
-            if msg[0:6] == "target":
+            if msg[0:6] == "target" and not msg[0:10] == "theftfalse":
                 self.selection.append(ast.literal_eval(msg[6:]))
                 App.write_server(self,message="calibrating")
             #Message: request
@@ -160,10 +158,10 @@ class App(object):
     #Send a SMS text to user if a security event takes place
     def send_sms(self):
         server = smtplib.SMTP( "smtp.gmail.com", 587 )
-        server.starttls()
-        server.login( 'securiotalert@gmail.com', 'securiot144r' )
-        server.sendmail( 'securiotalert@gmail.com', '6302207435@vtext.com', 'ALERT, Securiot has detected a security event' )
-        server.sendmail( 'securiotalert@gmail.com', '8457751342@messaging.sprintpcs.com', 'ALERT, Securiot has detected a security event' )
+        #server.starttls()
+        #server.login( 'securiotalert@gmail.com', 'securiot144r' )
+        #server.sendmail( 'securiotalert@gmail.com', '6302207435@vtext.com', 'ALERT, Securiot has detected a security event' )
+        #server.sendmail( 'securiotalert@gmail.com', '8457751342@messaging.sprintpcs.com', 'ALERT, Securiot has detected a security event' )
 
     #Check the focus region for change in object location
     def check_obj(self,area_arr,i):
@@ -196,11 +194,15 @@ class App(object):
             self.calib[i] += 1
             return False
         #Check current values versus calibration phase
-        elif self.calib[i] > self.calib_len and not self.stolen[i]:
+        elif self.calib[i] > self.calib_len and self.stolen[i] < 10:
             self.temp_area[i].pop(0)
             self.temp_area[i].append(sum(area_arr[-4:]))
+            print self.stolen[i]
             if abs(np.mean(self.temp_area[i])-self.area_mean[i]) > self.check_num[i]:
-                self.stolen[i] = 1
+                self.stolen[i] = self.stolen[i] + 1
+            else:
+                self.stolen[i] = 0
+            if self.stolen[i] > 5:
                 return True
             return False
 
@@ -209,63 +211,52 @@ class App(object):
         App.write_server(self,message="piloaded")
         while True:
             if self.cameraon:
-                with picamera.PiCamera() as camera:
-                    camera.resolution = (640, 480)
-                    stream = picamera.PiCameraCircularIO(camera, seconds=2)
-                    camera.start_recording(stream, format='h264')
-                    #camera.wait_recording(0.3)
-                    #print "195"
-                    #App.write_server(self,message="picameron")
-                    while self.cameraon:
-                        camera.wait_recording(0.3)
-                        self.frame = App.take_pic(self,camera)
-                        #Read server for updates
-                        if (int(time.time()) - self.last_read) > self.read_delay:
-                            App.read_server(self)
-                            self.last_read = int(time.time())
-                        #Send initial image for target location
-                        if not self.init_img_sent:
-                            App.send_first(self,self.frame)
-                        #Wait for response from user
-                        if self.selection:
-                            for s in self.selection:
-                                ind = self.selection.index(s)
-                                x0, y0, x1, y1 = s
-                                focus = self.frame[y0:y1,x0:x1]
-                                img = cv2.cvtColor(focus, cv2.COLOR_BGR2GRAY)
-                                edges = cv2.Canny(img, 2000, 200, apertureSize=5)
-                                kernel = np.ones((3,3),np.uint8)
-                                edges = cv2.dilate(edges,kernel,iterations = 2)
-                                preview = self.frame #np.copy(self.frame)
-                                contours, hier = cv2.findContours(edges,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE,offset=(x0,y0))
-                                area_arr = []
-                                for cnt in contours:
-                                    hull = cv2.convexHull(cnt)
-                                    area_arr.append(cv2.contourArea(hull))
-                                    cv2.fillConvexPoly(preview,hull,(255,255,100))
-                                area_arr.sort()
-                                #Object has been stolen
-                                if App.check_obj(self,area_arr,ind):
-                                    print 'Alert, object stolen!'
-                                    App.send_sms(self)
-                                    App.write_server(self,message="thefttrue")
-                                    camera.split_recording('after.h264')
-                                    # Write the 10 seconds "before" motion to disk
-                                    App.write_video(self,stream)
-                                    # Record 10s after steal
-                                    camera.wait_recording(10)
-                                    camera.split_recording(stream)
-                                    App.write_server(self,file_name="before.h264")
-                                    App.write_server(self,file_name="after.h264")
-                                    App.write_server(self,message="downloadvideo")
-                                    self.selection = []
-                                #winname = 'Focus'
-                                #cv2.imshow(winname,preview)
-                        ch = 0xFF & cv2.waitKey(1)
-                        if ch == 27:
-                            break
-                    cv2.destroyAllWindows()
-                    camera.stop_recording()
+                #camera.wait_recording(0.3)
+                #print "195"
+                #App.write_server(self,message="picameron")
+                while self.cameraon:
+                    self.frame = App.take_pic(self)
+                    #Read server for updates
+                    if (int(time.time()) - self.last_read) > self.read_delay:
+                        App.read_server(self)
+                        self.last_read = int(time.time())
+                    #Send initial image for target location
+                    if not self.init_img_sent:
+                        App.send_first(self,self.frame)
+                    #Wait for response from user
+                    if self.selection:
+                        for s in self.selection:
+                            ind = self.selection.index(s)
+                            x0, y0, x1, y1 = s
+                            focus = self.frame[y0:y1,x0:x1]
+                            img = cv2.cvtColor(focus, cv2.COLOR_BGR2GRAY)
+                            edges = cv2.Canny(img, 2000, 200, apertureSize=5)
+                            kernel = np.ones((3,3),np.uint8)
+                            edges = cv2.dilate(edges,kernel,iterations = 2)
+                            preview = self.frame #np.copy(self.frame)
+                            contours, hier = cv2.findContours(edges,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE,offset=(x0,y0))
+                            area_arr = []
+                            for cnt in contours:
+                                hull = cv2.convexHull(cnt)
+                                area_arr.append(cv2.contourArea(hull))
+                                cv2.fillConvexPoly(preview,hull,(255,255,100))
+                            area_arr.sort()
+                            #Object has been stolen
+                            if App.check_obj(self,area_arr,ind):
+                                print 'Alert, object stolen!'
+                                App.send_sms(self)
+                                App.write_server(self,message="thefttrue")
+                                # Write the 10 seconds "before" motion to disk
+                                # Record 10s after steal
+                                App.write_server(self,file_name="before.h264")
+                                App.write_server(self,file_name="after.h264")
+                                App.write_server(self,message="downloadvideo")
+                                self.selection = []
+                            cv2.imshow('Focus',preview)
+                    ch = 0xFF & cv2.waitKey(1)
+                    if ch == 27:
+                        break
+                cv2.destroyAllWindows()
             else:
                 if (int(time.time()) - self.last_read) > self.read_delay:
                     App.reset_app(self)
