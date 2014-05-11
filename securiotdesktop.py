@@ -51,7 +51,7 @@ class App(object):
         self.memory = []
         self.steal_mem=[]
         self.last_read = int(time.time())
-        self.read_delay = 4
+        self.read_delay = 7
         self.cameraon = False
 
     def reset_app(self):
@@ -69,7 +69,7 @@ class App(object):
         self.memory = []
         self.steal_mem=[]
         self.last_read = int(time.time())
-        self.read_delay = 4
+        self.read_delay = 7
         self.cameraon = False
 
     #Take picture and convert into CV2 format
@@ -105,7 +105,7 @@ class App(object):
         if msg == "cameraon":
             self.cameraon = True
         if self.cameraon:
-            if msg[0:6] == "target" and not msg[0:10] == "theftfalse":
+            if msg[0:6] == "target":
                 self.selection.append(ast.literal_eval(msg[6:]))
                 App.write_server(self,message="calibrating")
             #Message: request
@@ -197,7 +197,6 @@ class App(object):
         elif self.calib[i] > self.calib_len and self.stolen[i] < 10:
             self.temp_area[i].pop(0)
             self.temp_area[i].append(sum(area_arr[-4:]))
-            print self.stolen[i]
             if abs(np.mean(self.temp_area[i])-self.area_mean[i]) > self.check_num[i]:
                 self.stolen[i] = self.stolen[i] + 1
             else:

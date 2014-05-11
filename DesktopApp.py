@@ -40,17 +40,17 @@ def onmouse(event, x, y, flags, param):
 def cameraon():
     msg = read_server()
     while (msg != "piloaded") and (msg != "cameraoff") and (msg != "picameraoff"):
-        time.sleep(2)
+        time.sleep(4)
     write_server(message="cameraon") 
 
 def arm_sys():
     cv2.namedWindow('Init_img')
     cv2.setMouseCallback('Init_img', onmouse)
-    while read_server() != "downloadinitpic":
-        time.sleep(2)
+    while read_server() != "downloadinitpic" and read_server() != "downloadsnapshot":
+        time.sleep(4)
     read_server(file_name="init_pic.jpg")
     init_img = cv2.imread('init_pic.jpg')
-    eg.msgbox("To set the target area in the following image, click on the top-left and bottom-right corners of a rectangle that will bound the object. Press 'Enter' and the Image will show the selected region. Press eneter again to send to Securiot.")
+    eg.msgbox("To set the target area in the following image, click on the top-left and bottom-right corners of a rectangle that will bound the object. Press 'Enter' and the image will show the selected region. Press 'Enter' again to send target region to Securiot.")
     cv2.imshow("Init_img",init_img)
     ch = cv2.waitKey(0) & 0xFF
     x0, y0 = topcorner
@@ -62,14 +62,15 @@ def arm_sys():
     target = "target"+ str((x0,y0,x1,y1))
     write_server(message=target)
     while read_server() != "theftfalse":
-        time.sleep(1)
+        time.sleep(4)
     print "System is now armed"
 
 #Snapshot retrieval
 def snapshot():
     write_server(message="requestsnapshot")
+    time.sleep(10)
     while read_server() != "downloadsnapshot":
-        time.sleep(2)
+        time.sleep(4)
     read_server(file_name="snapshot.jpg")
     snapshot = cv2.imread('snapshot.jpg')
     cv2.imshow("Snapshot",snapshot)
@@ -77,14 +78,14 @@ def snapshot():
     cv2.destroyAllWindows()
 
 def check_for_theft():
-    print "Checking_for_theft"
-    if read_server() == "thefttrue":
+    print "Checking for theft"
+    if read_server() == "thefttrue" or read_server() == "downloadvideo":
         return True
     return False
 
 def downloadvideo():
     while read_server() != "downloadvideo":
-        time.sleep(2)    
+        time.sleep(4)    
     read_server(file_name="before.h264")
     read_server(file_name="after.h264")
 
@@ -95,7 +96,7 @@ time1 = 0
 sysarm = False
 
 while 1:
-    msg ="What would you like to do"
+    msg ="What would you like to do?"
     title = "Securiot for Desktop"
     if not sysarm:
         choices = ["Turn Camera On", "Arm System", "Take A Snapshot", "Turn Camera Off"]
@@ -120,7 +121,7 @@ while 1:
         if check_for_theft():
             eg.msgbox("ALERT: A Theft Has Occured, Downloading Video Now")
             downloadvideo()
-            eg.msgbox("Video Downloaded Successfully")
+            eg.msgbox("Video Downloaded Successfully, Access before.h264 and after.h264, located in the current directory")
             sysarm = False
-        time.sleep(1)
+        time.sleep(10)
     time1 += 1
