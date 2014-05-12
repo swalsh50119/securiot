@@ -1,30 +1,39 @@
-Securiot: The Future of Desktop Surveillance
+<head>
+</head>
+<body>
+<h2>Securiot: The Future of Desktop Surveillance </h2>
+<h4> By Rob Boling and Sean Walsh </h4>
+<h3>Contents:</h3>
+<ul>
+<li>1. How to Run Securiot</li>
+<li>2. File Index and Descriptions</li>
+<li>3. Code Layout</li>
+</ul>
+<h3>1. How to Run Securiot</h3>
+<p>To start using Securiot, you must first plug in the Raspberry Pi to a power source and an internet connection. Once the device is set up, you can run "python DesktopApp.py" on a laptop or run the Securiot Android application on your android device. Note there are some python libraries that the Desktop App uses such as openCV and easygui which will need to be installed. The application will provide options to turn the camera on, arm the system, take a snapshot, or turn the camera off. If you click each of the options, dialog boxes will guide you through the process. In the desktop application, make sure to press OK after reading the message box since the program halts on the message boxes, and press any key while the mouse is inside an image to exit the image and move forward. If you have any errors while running the desktop application, you can always restart the desktop application and select "Turn Camera Off / Reset System" to reset Securiot. This will clear Securiot's memory and return it to the state when it was first turned on. 
+</p>
+<h3>2. File Index and Descriptions</h3>
+<ul>
+<li>144r_2.pem - PEM file needed for logging into the server to communicate.</li>
+<li>after.h264 - Video file of the footage after the event took place. (A sample is currently saved)</li>
+<li>before.h264 - Video file of the footage before and during the event taking place. (A sample is currently saved)</li>
+<li>common.pyc - A file with common functions needed in video.pyc</li>
+<li>DesktopApp.py - The Securiot Desktop Application. Used to control the Raspberry Pi and operate Securiot.</li>
+<li>info.txt - The file used to communicate back and forth with the server.</li>
+<li>init_pic.jpg - The picture used by the user to select the target region (A sample is currently saved)</li>
+<li>readme.html - This document</li>
+<li>runsec.sh - Command the raspberry pi runs on startup to start Securiot.</li>
+<li>securiot.py - The program running on the Raspberry Pi which runs  Securiot. This program handles all aspects of Securiot on the Pi and contains the system's algorithm.</li>
+<li>server.py - A python server used on the server to communicate with the android application.</li>
+<li>snapshot.jpg - The snapshot retreived by the DesktopApp.py goes here.</li>
+<li>to_receive - Bash file which performs scp and downloads a file from the server.</li>
+<li>to_receive_desktop - Bash file which is the same as to_receive except for the destination file path. (Used by DesktopApp.py)</li>
+<li>to_send - Bash file which uploads files to server.</li>
+<li>video.pyc - A file with common functions used by securiot.py.</li>
+</ul>
+<h3>3. Code Layout</h3>
+<p>
+On the Raspberry Pi, runsec.sh is run on startup which starts securiot.py. This runs indefinitely on the Pi. DesktopApp.py can be run on a laptop to control Securiot. When the Desktop app downloads the video files of an object being stolen, they are saved in before.h264 and after.h264. The other files are used by these applications. 
+</p>
 
-Contents:
-1. How to Run Securiot
-2. File Index and Descriptions
-3. Code Layout
-
-
-2. File Index and Descriptions
-
-144r_2.pem - PEM file needed for logging into the server to communnicate.
-after.h264 - Video file of the footage after the event took place.
-before.h264 - Video file of the footage before and during the event taking place. 
-common.pyc - A file with common functions needed in video.pyc
-DesktopApp.py - The Securiot Desktop Application. Used to control the Raspberry Pi and operate Securiot. 
-info.txt - The file used to communicate back and forth with the server.
-readme.html - This document
-runsec.sh - Command the raspberry pi runs on startup to start Securiot.
-securiot.py - The program running on the Raspberry Pi which runs  Securiot. This program handles all aspects of Securiot on the Pi.
-securiotdesktop.py - A desktop version of securiot that runs with an integrated webcam. Used mainly for quick testing of an idea.
-server.py - A python server used on the server to communicate with the android application. 
-snapshot.jpg - The snapshot retreived by the DesktopApp.py goes here.
-to_receive - Bash file which performs scp and downlaods a file from the server.
-to_receive_desktop - Bash file which is the same as to_receive except for the destination file path. (Used in testing)
-to_send - Bash file which uploads files to server.
-video.pyc - A file with common functions used by securiot.py. 
-
-3. Code Layout
-
-On the Raspberry Pi, runsec.sh is run on startup which starts securiot.py. This runs indefinietly on the Pi
+</body>
