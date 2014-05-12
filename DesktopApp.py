@@ -75,7 +75,7 @@ def arm_sys():
         msg = read_server()
     read_server(file_name="init_pic.jpg")
     init_img = cv2.imread('init_pic.jpg')
-    eg.msgbox("To set the target area in the following image, click on the top-left and bottom-right corners of a rectangle that will bound the object. Press 'Enter' and the image will show the selected region. Press 'Enter' again to send target region to Securiot.")
+    eg.msgbox("Securiot needs to learn where the object is to track it. This requires you to select a target region in the camera's field of view.\nTo set the target area in the following image, click on the top-left and bottom-right corners of a rectangle that will bound the object. Press 'Enter' and the image will show the selected region. Press 'Enter' again to send target region to Securiot. \n It is very important that the entire object is in the bounding rectangle.")
     cv2.imshow("Init_img",init_img)
     ch = cv2.waitKey(0) & 0xFF
     x0, y0 = topcorner
