@@ -8,4 +8,4 @@ fi
 
 FILE=$1
 
-scp -i 144r_2.pem ubuntu@ec2-54-187-142-166.us-west-2.compute.amazonaws.com:~/$1 ~/Desktop/proj
+scp -i 144r_2.pem ubuntu@ec2-54-187-142-166.us-west-2.compute.amazonaws.com:~/$1 .
